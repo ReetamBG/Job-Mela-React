@@ -1,0 +1,5 @@
+export {default as Hero} from "./Hero"
+export {default as Melas} from "./Melas"
+export {default as HowItWorks} from "./HowItWorks"
+export {default as CtaSection} from "./CtaSection"
+export {default as Companies} from "./Companies"
