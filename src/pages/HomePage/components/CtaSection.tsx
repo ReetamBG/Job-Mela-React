@@ -12,7 +12,7 @@ const CtaSection = () => {
               alt=""
               className="h-[32rem] object-contain absolute left-0 z-10 top-1/2 -translate-y-1/2"
             />
-            <div className="max-w-3xl ml-auto pl-24">
+            <div className="max-w-3xl ml-auto pl-24 z-10">
               <h2 className="text-xl lg:text-3xl mb-4 font-bold">
                 Ready to Kickstart Your Career? Discover jobs across popular sectors
               </h2>

@@ -1,4 +1,4 @@
-import { Companies, CtaSection, Hero, HowItWorks, Melas } from "@/components/homePage";
+import { Companies, CtaSection, Hero, HowItWorks, Melas } from "@/pages/HomePage/components";
 
 const HomePage = () => {
   return (

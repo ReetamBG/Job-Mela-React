@@ -1,5 +1,6 @@
 import type { Company } from "@/types";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export interface GetCompaniesParams {
   district: string;
@@ -27,6 +28,7 @@ const useCompanies = (filters?: GetCompaniesParams) => {
         const data = await res.json();
         setCompanies(data.data);
       } catch (error) {
+        toast.error("No companies found");
         console.log(error);
         setCompanies([]);
       }

@@ -1,5 +1,6 @@
 import type { Mela } from "@/types";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const useMelas = () => {
   const [melas, setMelas] = useState<Mela[]>([]);
@@ -14,6 +15,7 @@ const useMelas = () => {
         const data = await res.json();
         setMelas(data.data.melaInfo);
       } catch (error) {
+        toast.error("Could not fetch melas");
         console.log(error);
         setMelas([]);
       }

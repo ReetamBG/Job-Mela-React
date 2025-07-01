@@ -109,7 +109,7 @@ const FilterForm = ({
       <p className="font-bold mb-3">Interview</p>
       <Select onValueChange={setType} value={type}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Course Type" />
+          <SelectValue placeholder="Interview Type" />
         </SelectTrigger>
         <SelectContent>
           {["online", "offline"].map((t) => (

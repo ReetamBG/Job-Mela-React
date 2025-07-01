@@ -10,11 +10,11 @@ const HowItWorks = () => {
 
           <div className="relative mt-24">
             {/* Vertical timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-0.5 w-full border-t-2 border-dashed border-gray-700 -z-0"></div>
+            <div className="hidden sm:block absolute left-1/2 transform -translate-x-1/2 h-0.5 w-full border-t-2 border-dashed border-gray-700 -z-0"></div>
 
-            <div className="flex">
+            <div className="flex flex-col sm:flex-row">
               {/* STEP 1 */}
-              <div className="relative w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
+              <div className="relative w-full sm:w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
                 {/* Text */}
                 <div className="w-full text-center md:text-left px-6">
                   <h3 className="text-xl font-medium mb-6">Register or Apply with Existing Details</h3>
@@ -22,7 +22,7 @@ const HowItWorks = () => {
                     Begin by creating a new profile or applying with your existing credentials. Your identity will be verified to ensure eligibility and streamline further steps in the hiring process.
                   </p>
                 </div>
-                <div className="absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
+                <div className="hidden sm:block absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
                   STEP 1
                 </div>
                 <div className="w-full">
@@ -34,7 +34,7 @@ const HowItWorks = () => {
                 </div>
               </div>
               {/* STEP 2 */}
-              <div className="relative w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
+              <div className="relative w-full sm:w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
                 {/* Text */}
                 <div className="w-full lg:pl-10 text-center md:text-left px-6">
                   <h3 className="text-xl font-medium mb-6">Get Personalized Recommendations</h3>
@@ -42,7 +42,7 @@ const HowItWorks = () => {
                     Based on your qualifications and preferences, the system will recommend potential employers or candidates. These suggestions align with your profile, increasing your chances of a successful match.
                   </p>
                 </div>
-                <div className="absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
+                <div className="hidden sm:block absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
                   STEP 2
                 </div>
                 <div className="w-full">
@@ -54,7 +54,7 @@ const HowItWorks = () => {
                 </div>
               </div>
               {/* STEP 3 */}
-              <div className="relative w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
+              <div className="relative w-full sm:w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
                 {/* Text */}
                 <div className="w-full text-center md:text-left px-6">
                   <h3 className="text-xl font-medium mb-6">Schedule Interviews with Ease</h3>
@@ -62,7 +62,7 @@ const HowItWorks = () => {
                     Once you’ve found the right match, set up your interview—either in person or online—at a time that suits both parties. Seamless coordination ensures a smooth step toward your next career move.
                   </p>
                 </div>
-                <div className="absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
+                <div className="hidden sm:block absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
                   STEP 3
                 </div>
                 <div className="w-full">

@@ -1,22 +1,30 @@
 import MainLayout from "@/layouts/MainLayout";
-import AllCompaniesPage from "@/pages/AllCompaniesPage";
+import AllCompaniesPage from "@/pages/AllCompaniesPage/AllCompaniesPage";
 import AllMelasPage from "@/pages/AllMelasPage";
 import CompanyDetailsPage from "@/pages/CompanyDetailsPage";
-import HomePage from "@/pages/HomePage";
+import HomePage from "@/pages/HomePage/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { store } from "./store";
+import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import MelaDetailsPage from "@/pages/MelaDetailsPage/MelaDetailsPage";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/all-companies" element={<AllCompaniesPage />} />
-          <Route path="/all-melas" element={<AllMelasPage />} />
-          <Route path="/company/:phoneNo" element={<CompanyDetailsPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <ToastContainer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="all-companies" element={<AllCompaniesPage />} />
+            <Route path="all-melas" element={<AllMelasPage />} />
+            <Route path="company/:phoneNo" element={<CompanyDetailsPage />} />
+            <Route path="mela/:mela-no" element={<MelaDetailsPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

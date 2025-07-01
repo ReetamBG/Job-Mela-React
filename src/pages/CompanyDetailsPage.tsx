@@ -49,10 +49,10 @@ const CompanyDetailsPage = () => {
     if (phoneNo) fetchCompanyDetails();
   }, [phoneNo]);
 
-  if (!companyDetails) return <p className="text-center py-10">Loading...</p>;
+  if (!companyDetails) return <p className="text-center py-10">Loading Details ...</p>;
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12 mb-10">
+    <section className="max-w-4xl mx-auto px-6 py-12 mb-10">
       <div className="flex flex-col sm:flex-row gap-8 items-center sm:items-start">
         {/* Avatar */}
         <div className="flex-shrink-0">
@@ -98,7 +98,7 @@ const CompanyDetailsPage = () => {
       <hr className="my-8" />
 
       {/* Main Info */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-gray-700">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
         <Info label="Sector" value={companyDetails.vsSectors} />
         <Info
           label="Turnover"
@@ -122,7 +122,7 @@ const CompanyDetailsPage = () => {
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Point of Contact (SPOC)
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-gray-700">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
           <Info label="Name" value={companyDetails.spocName} />
           <Info label="Email" value={companyDetails.spocEmaail} />
           <Info label="Contact Number" value={companyDetails.spocContactNo} />

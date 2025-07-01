@@ -6,7 +6,7 @@ export interface Company {
   fklmela_no: number;
   venue_name: string;
   vsQualification: string;
-  phone_no: string
+  phone_no: string;
   vsSelectionProcedure: "online" | "offline";
 }
 
@@ -31,3 +31,34 @@ export interface Mela {
   start_date: string;
   venueType?: "In Person" | "Online";
 }
+
+export interface CandidateData {
+  firstName: string;
+  middleName: string | null;
+  lastName: string;
+  gender: string;
+  dob: string;
+  mobile: string;
+  caste: string;
+  religion: string;
+  qualification: string;
+}
+
+export interface EmployerData {
+  companyName: string;
+  contactPerson: string;
+  email: string;
+  mobile: string;
+}
+
+export interface CandidateUser  {
+  type: "candidate";
+  data: CandidateData;
+};
+
+export interface EmployerUser {
+  type: "employer";
+  data: EmployerData;
+};
+
+export type User = CandidateUser | EmployerUser;
