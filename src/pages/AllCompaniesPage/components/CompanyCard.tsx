@@ -1,5 +1,5 @@
 import HoverPill from "@/components/customComponents/HoverPill";
-import { ArrowRight, GraduationCap, MessageCircleMore } from "lucide-react";
+import { GraduationCap, MessageCircleMore } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface CompanyCardProps {
@@ -18,7 +18,7 @@ const CompanyCard = ({
   type,
 }: CompanyCardProps) => {
   return (
-    <div className="min-w-[250px] max-w-sm flex-shrink-0 bg-white border border-emerald-400 shadow-card shadow-emerald-600 text-center px-6 py-8">
+    <Link to={`/company/${phoneNo}`} className="flex-shrink-0 bg-white border border-gray-400 shadow-card shadow-gray-600 hover:bg-gray-100 text-center px-6 py-8">
       <img
         src={`https://dummyimage.com/80x80/${Math.floor(
           Math.random() * 16777215
@@ -56,17 +56,9 @@ const CompanyCard = ({
       </div>
 
       <p className=" w-full">
-        <Link
-          to={`/company/${phoneNo}`}
-          className="hover:underline flex text-xs text-emerald-700 justify-end mt-5 me-2"
-        >
-          More Details
-          <span>
-            <ArrowRight size={15} />
-          </span>
-        </Link>
+       
       </p>
-    </div>
+    </Link>
   );
 };
 

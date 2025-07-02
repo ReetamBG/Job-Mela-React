@@ -21,7 +21,7 @@ const Companies = () => {
           {companies.map((company, idx: number) => (
             <div
               key={idx}
-              className="w-[15rem] sm:w-[20rem] flex-shrink-0 bg-white border border-emerald-400 shadow-card shadow-emerald-600 text-center px-6 py-8"
+              className="w-[15rem] sm:w-[20rem] flex-shrink-0 bg-white border border-gray-400 shadow-card shadow-gray-600 hover:bg-gray-100 text-center px-6 py-8"
             >
               <img
                 src={`https://dummyimage.com/80x80/${Math.floor(

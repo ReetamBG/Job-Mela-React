@@ -36,7 +36,7 @@ const Navbar = () => {
     }
     if (decodedUser) {
       dispatch(setUser(decodedUser));
-      console.log("Decoded User:", decodedUser);
+      // console.log("Decoded User:", decodedUser);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,13 +135,14 @@ const Navbar = () => {
 
           {/* Desktop Buttons */}
           {user ? (
-            <div className="xl:flex flex-row gap-2 hidden">
+            <div className="xl:flex flex-row gap-5 hidden">
               <a
                 href="#"
-                className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:underline py-4 xl:bg-emerald-400 xl:hover:bg-emerald-400/80 xl:rounded-full xl:border-gray-300 px-8 xl:px-4 xl:py-2.5 xl:no-underline xl:hover:no-underline"
+                className="size-15 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center"
               >
-                <i className="bi bi-person" />
-                <span>Profile</span>
+                {user.type === "candidate" && user.data.firstName.slice(0,1)}
+                {/* <i className="bi bi-person" />
+                <span>Profile</span> */}
               </a>
               <button
                 onClick={handleLogout}

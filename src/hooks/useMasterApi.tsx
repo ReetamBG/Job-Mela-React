@@ -1,15 +1,17 @@
 import type { District, Qualification } from "@/types";
 import { useEffect, useState } from "react";
 
-const useDetails = () => {
+const useMasterApi = () => {
   const [districts, setDistricts] = useState<District[]>([]);
   const [qualifications, setQualifications] = useState<Qualification[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const url = import.meta.env.VITE_BASE_URL + "/v1/candidate/master";
 
     (async () => {
       try {
+        setIsLoading(true);
         const res = await fetch(url, {
           headers: { "User-Agent": "Mozilla/5.0" },
         });
@@ -21,11 +23,13 @@ const useDetails = () => {
         console.log(error);
         setDistricts([]);
         setQualifications([]);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
 
-  return { districts, qualifications };
+  return { districts, qualifications, isLoading };
 };
 
-export default useDetails;
+export default useMasterApi;

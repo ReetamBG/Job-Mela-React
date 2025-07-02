@@ -1,14 +1,15 @@
 import type { Company, District } from "@/types";
 import useCompanies, { type GetCompaniesParams } from "@/hooks/useCompanies";
-import useDetails from "@/hooks/useDetails";
+import useMasterApi from "@/hooks/useMasterApi";
 import CompanyCard from "@/pages/AllCompaniesPage/components/CompanyCard";
-import FilterForm from "@/pages/AllCompaniesPage/components/FilterForm";
+import FilterForm from "@/pages/AllCompaniesPage/components/CompanyFilterForm";
 import useMelas from "@/hooks/useMelas";
 import { useState } from "react";
+import Loading from "@/components/customComponents/Loading";
 
 const AllCompaniesPage = () => {
-  const { melas } = useMelas();
-  const { qualifications, districts } = useDetails();
+  const { melas, isLoading } = useMelas();
+  const { qualifications, districts } = useMasterApi();
 
   // filtered districts from Assam (state id = 4)
   const filteredDistricts = districts?.filter(
@@ -17,10 +18,10 @@ const AllCompaniesPage = () => {
 
   // Companies filter logic
   const [filters, setFilters] = useState<GetCompaniesParams>({
-    district: "",
-    qualification_id: "",
-    fklmela_no: "",
-    interview_mode: "",
+    district: null,
+    qualification_id: null,
+    fklmela_no: null,
+    interview_mode: null,
   });
 
   const { companies } = useCompanies(filters);
@@ -28,6 +29,8 @@ const AllCompaniesPage = () => {
   const handleFilterFormSubmit = (newFilters: GetCompaniesParams) => {
     setFilters(newFilters);
   };
+
+  if(isLoading) return <Loading item="Companies" />
 
   return (
     <section className="px-4 py-12 flex-grow flex">

@@ -1,6 +1,6 @@
 import MainLayout from "@/layouts/MainLayout";
 import AllCompaniesPage from "@/pages/AllCompaniesPage/AllCompaniesPage";
-import AllMelasPage from "@/pages/AllMelasPage";
+import AllMelasPage from "@/pages/AllMelasPage/AllMelasPage";
 import CompanyDetailsPage from "@/pages/CompanyDetailsPage";
 import HomePage from "@/pages/HomePage/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -20,7 +20,7 @@ function App() {
             <Route path="all-companies" element={<AllCompaniesPage />} />
             <Route path="all-melas" element={<AllMelasPage />} />
             <Route path="company/:phoneNo" element={<CompanyDetailsPage />} />
-            <Route path="mela/:mela-no" element={<MelaDetailsPage />} />
+            <Route path="mela/:melaId" element={<MelaDetailsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

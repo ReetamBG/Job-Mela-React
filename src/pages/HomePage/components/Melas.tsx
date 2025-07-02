@@ -20,7 +20,7 @@ const Melas = () => {
             </p>
           </div>
           {melas.slice(0, 4).map((mela) => (
-            <MelaCard key={mela.sl_no} mela={mela} />
+            <MelaCard key={mela.pklMelaId} mela={mela} />
           ))}
         </div>
         {/* No Mela */}

@@ -98,8 +98,8 @@ const FilterForm = ({
         </SelectTrigger>
         <SelectContent>
           {melas.map((m) => (
-            <SelectItem key={m.sl_no} value={String(m.sl_no)}>
-              {m.venue_name}
+            <SelectItem key={m.pklMelaId} value={String(m.pklMelaId)}>
+              {m.vsVenueName}
             </SelectItem>
           ))}
         </SelectContent>
