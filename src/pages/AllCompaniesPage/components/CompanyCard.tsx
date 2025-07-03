@@ -34,13 +34,6 @@ const CompanyCard = ({
       </p>
 
       <div className="grid grid-cols-2 gap-4 text-xs mt-4">
-        {/* <div className="block items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs">
-          <i className="bi bi-mortarboard-fill"></i>{" "}
-          <span>{qualification}</span>
-        </div>
-        <div className="block items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs">
-          <i className="bi bi-chat-dots-fill"></i> <span>{type}</span>
-        </div> */}
         <HoverPill
           icon={<GraduationCap size={15} />}
           title={"Qualification"}

@@ -27,6 +27,10 @@ const JobPostings = () => {
 
   const filteredJobPostings = jobPostings.filter((job) => job.isEligible !== 1);
 
+  const areJobsLeftToApply = filteredJobPostings.some(job => 
+    job.isApplied !== 1
+  )
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedJobs.length === 0) {
@@ -53,7 +57,7 @@ const JobPostings = () => {
         }),
       });
       toast.success("Application submitted successfully!");
-      setSelectedJobs([]); // clear selected
+      setSelectedJobs([]);
 
       // manually update state to reflect applied jobs
       setJobPostings((prev) =>
@@ -165,20 +169,23 @@ const JobPostings = () => {
               })}
             </div>
             <div className="flex justify-end mt-4">
-              {user ? (
+              {!user ? (
                 <a href="https://public-registration.skillmissionassam.org/register?redirect=https://job-mela.skillmissionassam.org/">
-                  <Button type="submit" className="rounded-full h-10">
-                    Apply
+                  <Button type="button" className="rounded-full h-10">
+                    Apply for Mela
                   </Button>
                 </a>
               ) : (
-                <Button type="submit" className="rounded-full h-10">
+                // only show the apply button if there are jobs left to apply
+                areJobsLeftToApply && (
+                  <Button type="submit" className="rounded-full h-10">
                   {isSubmitting ? (
                     <Loader className="animate-spin" />
                   ) : (
                     "Apply for Selected Jobs"
                   )}
                 </Button>
+                ) 
               )}
             </div>
           </form>

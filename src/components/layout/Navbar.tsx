@@ -36,7 +36,7 @@ const Navbar = () => {
     }
     if (decodedUser) {
       dispatch(setUser(decodedUser));
-      // console.log("Decoded User:", decodedUser);
+      console.log("Decoded User:", decodedUser);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,9 +138,10 @@ const Navbar = () => {
             <div className="xl:flex flex-row gap-5 hidden">
               <a
                 href="#"
-                className="size-15 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center"
+                className="size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center"
               >
                 {user.type === "candidate" && user.data.firstName.slice(0,1)}
+                {user.type === "Employer" && user.data[0].userName.slice(0,1)}
                 {/* <i className="bi bi-person" />
                 <span>Profile</span> */}
               </a>

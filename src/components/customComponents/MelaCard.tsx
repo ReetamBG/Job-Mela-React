@@ -1,8 +1,8 @@
 import { formatDate, getDaysRemaining } from "@/lib/dateTime";
+
 import type { Mela } from "@/types";
 
 const MelaCard = ({ mela }: { mela: Mela }) => {
-
   return (
     <div
       key={mela.pklMelaId}

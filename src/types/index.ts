@@ -38,10 +38,17 @@ export interface CandidateData {
 }
 
 export interface EmployerData {
-  companyName: string;
-  contactPerson: string;
-  email: string;
-  mobile: string;
+  pklEntityId: number;
+    companyName: string;
+    roleId: number;
+    userName: string;
+    companyAddress: string;
+    companyEmail: string;
+    companyMobile: string;
+    companyPinCode: string;
+    empTypeId: number;
+    organizationTypeId: number | null;
+    organizationTypeName: string | null;
 }
 
 export interface CandidateUser {
@@ -49,12 +56,15 @@ export interface CandidateUser {
   data: CandidateData;
 }
 
-export interface EmployerUser {
-  type: "employer";
-  data: EmployerData;
-}
+export interface EmployerUser { 
+  admin_id: number;
+  login_name: string;
+  type: 'Employer';
+  data: EmployerData[];
+};
 
 export type User = CandidateUser | EmployerUser;
+
 
 // Company related Types
 export interface Company {

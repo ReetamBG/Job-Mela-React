@@ -9,11 +9,10 @@ const Companies = () => {
     <section className="py-12 xl:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <p className="text-3xl lg:text-5xl text-center mb-4">
-          Companies Participating
+          Explore Exciting Job Opportunities
         </p>
         <p className="mt-2 text-gray-700 mb-12 text-center max-w-xl mx-auto text-sm lg:text-base">
-          Meet the top companies hiring at our Job Mela events. Explore roles
-          and apply today.
+          Explore exciting job opportunities at our Job Mela. Find the right role and apply now!
         </p>
 
         {/* 🔄 Auto-Scroll Carousel */}
