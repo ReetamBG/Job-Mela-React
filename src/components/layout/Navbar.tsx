@@ -404,16 +404,20 @@ function MobileNav({
                 <p className="text-base font-medium">Convergence</p>
             </a>
             </div>
+
+          {/* Profile, Dashboard and Logout */}
           {user ? (
             <>
               <a
-                href="#"
+                href={`https://public-registration.skillmissionassam.org/dashboard/${jwtToken ? `?token=${jwtToken}` : ""}`}
                 className="text-base font-medium text-gray-700 flex gap-2 items-center"
               >
                 <LayoutDashboard size={15} />
                 My Dashboard
               </a>
-              <a href="#" className="text-base font-medium text-gray-700">
+              <a 
+              href={`https://public-registration.skillmissionassam.org/profile/${jwtToken ? `?token=${jwtToken}` : ""}`}
+              className="text-base font-medium text-gray-700">
                 <i className="bi bi-person" />
                 My Profile
               </a>
