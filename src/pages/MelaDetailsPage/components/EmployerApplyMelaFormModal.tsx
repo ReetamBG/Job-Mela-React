@@ -159,7 +159,7 @@ export default function EmployerApplyMelaFormModal({
         <Button className="rounded-full h-8">Apply for Mela</Button>
       </DialogTrigger>
 
-      <DialogContent className="w-3xl sm:w-8xl max-h-[82vh] overflow-y-auto top-120">
+      <DialogContent className="w-full max-w-[95%] sm:max-w-8xl max-h-[82vh] overflow-y-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <DialogHeader>
@@ -171,12 +171,13 @@ export default function EmployerApplyMelaFormModal({
 
             <div className="space-y-6">
               {fields.map((field, index) => (
+                <>
+                <p className="font-semibold text-xl">Job Post {index + 1}</p>
                 <div
-                  key={field.id}
-                  className="border p-6 rounded-lg space-y-4 relative bg-muted"
+                key={field.id}
+                className="border p-6 rounded-lg space-y-2 relative bg-muted grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
                 >
-                  <p className="font-semibold text-xl">Job Post {index + 1}</p>
-                  <div className="grid md:grid-cols-2 gap-4">
+                
                     {/* Post name */}
                     <FormInput
                       name={`jobList.${index}.vsPostName`}
@@ -193,10 +194,9 @@ export default function EmployerApplyMelaFormModal({
                       options={qualificationOptions}
                       placeholder="Select qualification"
                     />
-                  </div>
-
+                  
+                  <div className="grid grid-cols-2 gap-4">
                   {/* Number of vacancies */}
-                  <div className="grid md:grid-cols-2 gap-4">
                     <FormInput
                       name={`jobList.${index}.iVacancy`}
                       label="Vacancies"
@@ -213,13 +213,13 @@ export default function EmployerApplyMelaFormModal({
                       control={form.control}
                       placeholder="Enter duration in minutes"
                     />
-                  </div>
+                    </div>
 
+                  <div className="grid grid-cols-2 gap-4">
                   {/* Interview start time */}
-                  <div className="grid md:grid-cols-2 gap-4">
                     <FormInput
                       name={`jobList.${index}.dtInterviewStartTime`}
-                      label="Start Time"
+                      label="Interview Start Time"
                       type="time"
                       control={form.control}
                     />
@@ -227,14 +227,14 @@ export default function EmployerApplyMelaFormModal({
                     {/* Interview end time */}
                     <FormInput
                       name={`jobList.${index}.dtInterviewEndTime`}
-                      label="End Time"
+                      label="Interview End Time"
                       type="time"
                       control={form.control}
                     />
                   </div>
 
+                  <div className="grid grid-cols-2 gap-4">
                   {/* participation dates */}
-                  <div className="grid md:grid-cols-2 gap-4">
                     <FormInput
                       name={`jobList.${index}.participationStartDate`}
                       label="Participation Start Date"
@@ -247,7 +247,7 @@ export default function EmployerApplyMelaFormModal({
                       type="date"
                       control={form.control}
                     />
-                  </div>
+                    </div>
 
                   <FormSelect
                     name={`jobList.${index}.vsSelectionProcedure`}
@@ -259,8 +259,9 @@ export default function EmployerApplyMelaFormModal({
                     ]}
                   />
 
+                  
                   {index > 0 && (
-                    <div className="flex justify-end">
+                    <div className="flex justify-end items-center w-full col-span-2">
                       <Button
                         type="button"
                         variant="destructive"
@@ -273,6 +274,7 @@ export default function EmployerApplyMelaFormModal({
                     </div>
                   )}
                 </div>
+                </>
               ))}
 
               <Button
