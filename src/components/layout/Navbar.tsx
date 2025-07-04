@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -10,7 +10,15 @@ import { decodeJwt } from "@/lib/jwt";
 import type { User } from "@/types";
 import Cookies from "js-cookie";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LayoutDashboard, LogOut, User as UserIcon } from "lucide-react";
 
 const Navbar = () => {
   // get JWT token from URL search params
@@ -18,29 +26,31 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
 
-  // Decode JWT token to get user
-  useEffect(() => {
-    // Check if JWT token is available in cookies else take from URL search params
-    let jwtToken: string | null | undefined;
-    let decodedUser: User | null = null;
+  const [jwtToken, setJwtToken] = useState<string>("");
 
-    jwtToken = Cookies.get("token");
-    if (jwtToken) {
-      decodedUser = decodeJwt<User>(jwtToken);
+  useEffect(() => {
+    let decodedUser: User | null = null;
+    let token: string | null = Cookies.get("token") ?? null;
+
+    if (token) {
+      decodedUser = decodeJwt<User>(token);
     } else {
-      jwtToken = searchParams.get("token");
-      if (jwtToken) {
-        decodedUser = decodeJwt<User>(jwtToken);
-        Cookies.set("token", jwtToken, {expires: 7})  // set token in cookies
+      token = searchParams.get("token");
+      if (token) {
+        decodedUser = decodeJwt<User>(token);
+        Cookies.set("token", token, { expires: 7 });
       }
     }
-    if (decodedUser) {
-      dispatch(setUser(decodedUser));
-      console.log("Decoded User:", decodedUser);
+
+    // needed to redirect to links with the token
+    if (token) {
+      setJwtToken(token);
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+    if (decodedUser) {
+      dispatch(setUser(decodedUser));
+    }
+  }, [searchParams, dispatch]);
 
   const handleLogout = () => {
     dispatch(clearUser());
@@ -53,7 +63,30 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 relative">
         <div className="flex gap-8 items-center justify-between py-4">
           {/* Logo */}
-          <Link to="/" className="flex gap-2 items-center flex-shrink-0">
+          <Link
+            to="/"
+            className="flex items-center divide-x divide-emerald-200"
+          >
+            <img
+              alt="Logo"
+              className="h-10 xl:h-14 object-contain object-center pr-3"
+              src="https://skillmission.assam.gov.in/images/emblem-logo.png"
+            />
+            <img
+              alt="Logo"
+              className="h-10 xl:h-14 object-contain object-center pl-3"
+              src="https://skillmission.assam.gov.in/images/logo.png"
+            />
+            <div className="flex flex-col ml-5">
+              <p className="text-sm lg:text-3xl text-gray-700 font-semibold">
+                Assam Skill Developement Mission
+              </p>
+              <p className="text-xs lg:text-sm font-medium text-gray-700">
+                Digital Skill Center
+              </p>
+            </div>
+          </Link>
+          {/* <Link to="/" className="flex gap-2 items-center flex-shrink-0">
             <img
               src="/images/logo-demo.png"
               alt="Logo"
@@ -67,7 +100,7 @@ const Navbar = () => {
                 Digital Skill Center
               </p>
             </div>
-          </Link>
+          </Link> */}
 
           {/* Mobile Toggle Button */}
           <Sheet>
@@ -81,16 +114,31 @@ const Navbar = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-64 sm:w-100 p-4">
               <nav className="flex flex-col gap-10 mt-25">
-                <a href="#" className="text-base font-medium text-gray-700">
+                <a
+                  href={`https://skillcourse.skillmissionassam.org/${
+                    jwtToken ? `?token=${jwtToken}` : ""
+                  }`}
+                  className="text-base font-medium text-gray-700"
+                >
                   <i className="bi bi-bullseye" /> Schemes / Programs
                 </a>
                 <a href="#" className="text-base font-medium text-gray-700">
                   <i className="bi bi-chat-left-heart" /> Recommendations
                 </a>
-                <a href="#" className="text-base font-medium text-gray-700">
+                <a
+                  href={`https://skillcourse.skillmissionassam.org/${
+                    jwtToken ? `?token=${jwtToken}` : ""
+                  }`}
+                  className="text-base font-medium text-gray-700"
+                >
                   <i className="bi bi-mortarboard" /> Skill Courses
                 </a>
-                <a href="#" className="text-base font-medium text-gray-700">
+                <a
+                  href={`https://jobboard.skillmissionassam.org/${
+                    jwtToken ? `?token=${jwtToken}` : ""
+                  }`}
+                  className="text-base font-medium text-gray-700"
+                >
                   <i className="bi bi-briefcase" /> Job Search
                 </a>
                 <a href="#" className="text-base font-medium text-gray-700">
@@ -106,12 +154,18 @@ const Navbar = () => {
                   <>
                     <a href="#" className="text-base font-medium text-gray-700">
                       <i className="bi bi-person" />
-                     Profile
+                      Profile
                     </a>
-                    <a href="#" className="text-base font-medium text-gray-700">
-        
+                    <a href="#" className="text-base font-medium text-gray-700 flex gap-2 items-center">
+                      <LayoutDashboard size={15}/>
+                      Dashboard
+                    </a>
+                    <Button
+                      onClick={handleLogout}
+                      className="text-base font-medium text-white"
+                    >
                       <i className="bi bi-box-arrow-in-right" /> Logout
-                    </a>
+                    </Button>
                   </>
                 ) : (
                   <>
@@ -134,50 +188,69 @@ const Navbar = () => {
           </Sheet>
 
           {/* Desktop Buttons */}
-          {user ? (
-            <div className="xl:flex flex-row gap-5 hidden">
-              <a
-                href="#"
-                className="size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center"
-              >
-                {user.type === "candidate" && user.data.firstName.slice(0,1)}
-                {user.type === "Employer" && user.data[0].userName.slice(0,1)}
-                {/* <i className="bi bi-person" />
-                <span>Profile</span> */}
-              </a>
-              <button
-                onClick={handleLogout}
-                className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:underline py-4 xl:bg-black xl:hover:bg-black/80 xl:text-white xl:rounded-full xl:border-gray-300 px-8 xl:px-4 xl:py-2.5 xl:no-underline xl:hover:no-underline"
-              >
-                <i className="bi bi-box-arrow-right" />
-                <span>Logout</span>
-              </button>
-            </div>
-          ) : (
-            <div className="xl:flex flex-row gap-2 hidden">
-              <a
-                href="https://public-registration.skillmissionassam.org/register?redirect=https://job-mela.skillmissionassam.org/"
-                className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:underline py-4 xl:bg-emerald-400 xl:hover:bg-emerald-400/80 xl:rounded-full xl:border-gray-300 px-8 xl:px-4 xl:py-2.5 xl:no-underline xl:hover:no-underline"
-              >
-                <i className="bi bi-input-cursor" />
-                <span>Register</span>
-              </a>
-              <a
-                href="https://public-registration.skillmissionassam.org/login?redirect=https://job-mela.skillmissionassam.org/"
-                className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:underline py-4 xl:bg-black xl:hover:bg-black/80 xl:text-white xl:rounded-full xl:border-gray-300 px-8 xl:px-4 xl:py-2.5 xl:no-underline xl:hover:no-underline"
-              >
-                <i className="bi bi-box-arrow-in-right" />
-                <span>Login</span>
-              </a>
-            </div>
-          )}
+          <div className="hidden md:block">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <button className="cursor-pointer size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center">
+                    {user.type === "candidate" &&
+                      user.data.firstName.slice(0, 1)}
+                    {user.type === "Employer" &&
+                      user.data[0].userName.slice(0, 1)}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="z-100 relative top-2 right-10 rounded-sm w-40">
+                  <DropdownMenuItem className="text-lg text-gray-700">
+                    <a href="#" className="flex gap-2 items-center">
+                      <UserIcon />
+                      Profile
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-lg text-gray-700">
+                    <a href="#" className="flex gap-2 items-center">
+                      <LayoutDashboard />
+                      Dashboard
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="text-lg text-gray-700 flex gap-2 items-center"
+                    onClick={handleLogout}
+                  >
+                    <LogOut />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="xl:flex flex-row gap-2 hidden">
+                <a
+                  href="https://public-registration.skillmissionassam.org/register?redirect=https://job-mela.skillmissionassam.org/"
+                  className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:underline py-4 xl:bg-emerald-400 xl:hover:bg-emerald-400/80 xl:rounded-full xl:border-gray-300 px-8 xl:px-4 xl:py-2.5 xl:no-underline xl:hover:no-underline"
+                >
+                  <i className="bi bi-input-cursor" />
+                  <span>Register</span>
+                </a>
+                <a
+                  href="https://public-registration.skillmissionassam.org/login?redirect=https://job-mela.skillmissionassam.org/"
+                  className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:underline py-4 xl:bg-black xl:hover:bg-black/80 xl:text-white xl:rounded-full xl:border-gray-300 px-8 xl:px-4 xl:py-2.5 xl:no-underline xl:hover:no-underline"
+                >
+                  <i className="bi bi-box-arrow-in-right" />
+                  <span>Login</span>
+                </a>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Desktop Nav Items */}
         <div className="hidden xl:block border-t border-emerald-400 mt-1 pt-2">
           <nav className="flex flex-row gap-8">
             <a
-              href="#"
+              href={`https://skillcourse.skillmissionassam.org/${
+                jwtToken ? `?token=${jwtToken}` : ""
+              }`}
               className="text-sm text-gray-700 flex items-center gap-2 hover:underline"
             >
               <i className="bi bi-bullseye" />
@@ -191,14 +264,18 @@ const Navbar = () => {
               <span>Recommendations</span>
             </a>
             <a
-              href="#"
+              href={`https://skillcourse.skillmissionassam.org/${
+                jwtToken ? `?token=${jwtToken}` : ""
+              }`}
               className="text-sm text-gray-700 flex items-center gap-2 hover:underline"
             >
               <i className="bi bi-mortarboard" />
               <span>Skill Courses</span>
             </a>
             <a
-              href="#"
+              href={`https://jobboard.skillmissionassam.org/${
+                jwtToken ? `?token=${jwtToken}` : ""
+              }`}
               className="text-sm text-gray-700 flex items-center gap-2 hover:underline"
             >
               <i className="bi bi-briefcase" />

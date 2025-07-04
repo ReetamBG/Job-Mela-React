@@ -1,8 +1,25 @@
 import { formatDate, getDaysRemaining } from "@/lib/dateTime";
-
 import type { Mela } from "@/types";
 
 const MelaCard = ({ mela }: { mela: Mela }) => {
+  // Format days remaining into a shortened string
+  let daysRemainingShortened: string;
+  const remainingDays = getDaysRemaining(mela.dtEndDate);
+  if (remainingDays === null) {
+    daysRemainingShortened = "N/A";
+  } else {
+    const days = getDaysRemaining(mela.dtEndDate);
+    if (remainingDays < 7) {
+      daysRemainingShortened = days + " days";
+    } else if (remainingDays > 30 && remainingDays < 60) {
+      daysRemainingShortened = Math.floor(remainingDays / 7) + " weeks";
+    } else if (remainingDays >= 60 && remainingDays < 365) {
+      daysRemainingShortened = Math.floor(remainingDays / 30) + " months";
+    } else {
+      daysRemainingShortened = Math.floor(remainingDays / 365) + " year";
+    }
+  }
+
   return (
     <div
       key={mela.pklMelaId}
@@ -37,7 +54,7 @@ const MelaCard = ({ mela }: { mela: Mela }) => {
       </div>
       <div className="border-t-2 border-gray-300 border-dashed px-8 py-4 flex items-center justify-between gap-4">
         <p className="text-xs font-medium text-gray-500">
-          Ends in {getDaysRemaining(mela.dtEndDate)} days
+          Ends in {daysRemainingShortened}
         </p>
         <a
           href={`/mela/${mela.pklMelaId}`}

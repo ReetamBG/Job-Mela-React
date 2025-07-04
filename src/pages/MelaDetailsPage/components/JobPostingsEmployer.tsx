@@ -1,4 +1,4 @@
-import EmployerApplyMelaFormModal from "@/components/customComponents/EmployerApplyMelaFormModal";
+import EmployerApplyMelaFormModal from "@/pages/MelaDetailsPage/components/EmployerApplyMelaFormModal";
 import Loading from "@/components/customComponents/Loading";
 import useMelaDetails from "@/hooks/useMelaDetails";
 import { useParams } from "react-router-dom";

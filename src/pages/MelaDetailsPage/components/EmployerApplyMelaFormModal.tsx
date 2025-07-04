@@ -24,12 +24,14 @@ import { toast } from "react-toastify";
 import { LoaderCircle } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 import { selectCurrentUser } from "@/store/slices/authSlice";
+import { useState } from "react";
 
 export default function EmployerApplyMelaFormModal({
   mela,
 }: {
   mela: Mela;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
   const user = useAppSelector(selectCurrentUser)
   const employerId = user?.type === "Employer" ? user.data[0].pklEntityId : null;
   const jobPostSchema = z
@@ -144,6 +146,7 @@ export default function EmployerApplyMelaFormModal({
 
       form.reset();
       toast.success("Successfully applied for Mela!");
+      setIsOpen(false); // Close the modal on successful submission
     } catch (error) {
       toast.error("Failed to apply for Mela");
       console.error("Error applying for Mela: ", error);
@@ -151,7 +154,7 @@ export default function EmployerApplyMelaFormModal({
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className="rounded-full h-8">Apply for Mela</Button>
       </DialogTrigger>

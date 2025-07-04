@@ -16,11 +16,11 @@ const Companies = () => {
         </p>
 
         {/* 🔄 Auto-Scroll Carousel */}
-        <AutoScrollCarousel speed={10}>
+        <AutoScrollCarousel speed={20}>
           {companies.map((company, idx: number) => (
             <div
               key={idx}
-              className="w-[15rem] sm:w-[20rem] flex-shrink-0 bg-white border border-gray-400 shadow-card shadow-gray-600 hover:bg-gray-100 text-center px-6 py-8"
+              className="w-[15rem] mx-4 sm:w-[20rem] flex-shrink-0 bg-white border border-gray-400 shadow-card shadow-gray-600 hover:bg-gray-100 text-center px-6 py-8"
             >
               <img
                 src={`https://dummyimage.com/80x80/${Math.floor(
@@ -36,7 +36,7 @@ const Companies = () => {
               />
               <h3 className="text-base font-medium">{company.company_name}</h3>
               {company.comDesc && (
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                <p className="text-sm text-gray-600 mb-4 line-clamp-6">
                   {company.comDesc}
                 </p>
               )}
