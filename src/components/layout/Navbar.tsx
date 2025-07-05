@@ -55,13 +55,15 @@ const Navbar = () => {
     }
 
     // needed to redirect to links with the token
-    if (token) {
-      setJwtToken(token);
-    }
-
+    if (token) setJwtToken(token);
+    
     if (decodedUser) {
-      dispatch(setUser(decodedUser));
+      dispatch(setUser(decodedUser))
     }
+    else {
+      dispatch(setUser(null))
+    }
+    
   }, [searchParams, dispatch]);
 
   const handleLogout = () => {
@@ -71,9 +73,9 @@ const Navbar = () => {
   };
 
   return (
-    <section className="sticky top-0">
+    <section className="sticky top-0 z-[999]">
       {/*  Logo and title*/}
-      <div className="w-full mx-auto px-4 lg:px-30 relative bg-white/30 backdrop-blur-md shadow-md z-[99]">
+      <div className="w-full mx-auto px-4 lg:px-30 relative bg-white/30 backdrop-blur-md shadow-md">
         <div className="flex gap-8 items-center justify-between py-4">
           <Link
             to="/"
@@ -111,7 +113,7 @@ const Navbar = () => {
 
       {/* More section */}
       <div
-        className={`absolute w-[85%] left-1/2 -translate-x-1/2 top-35 rounded-xl bg-white/30 backdrop-blur-md shadow-md z-[99] transition-all ${
+        className={`absolute w-[85%] left-1/2 -translate-x-1/2 top-35 rounded-xl bg-white/30 backdrop-blur-md shadow-md z-[9998] transition-all ${
           showMore ? "block" : "hidden"
         }`}
       >
@@ -175,7 +177,7 @@ function DesktopUserSection({
               {user.type === "Employer" && user.data[0].userName.slice(0, 1)}
             </span>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="z-100 absolute top-2 -right-5 rounded-sm w-60 px-5">
+          <DropdownMenuContent className="z-[9999] absolute top-2 -right-5 rounded-sm w-60 px-5">
             {/* Profile icon and name */}
             <DropdownMenuItem className="text-lg text-gray-700">
               <button className="mx-2 cursor-pointer size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center">

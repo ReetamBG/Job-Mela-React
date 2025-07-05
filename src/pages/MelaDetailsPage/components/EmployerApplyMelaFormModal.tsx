@@ -141,7 +141,9 @@ export default function EmployerApplyMelaFormModal({
         }
       );
 
-      if (!res.ok) {
+      const resData = await res.json();
+
+      if (!res.ok || resData.status !== true) {
         const errorData = await res.json();
         console.log(errorData || "Failed to apply for Mela");
         throw new Error("Failed to apply for Mela. Please try again.");
@@ -174,7 +176,7 @@ export default function EmployerApplyMelaFormModal({
 
             <div className="space-y-6">
               {fields.map((field, index) => (
-                <>
+                <div key={index}>
                 <p className="font-semibold text-xl">Job Post {index + 1}</p>
                 <div
                 key={field.id}
@@ -277,7 +279,7 @@ export default function EmployerApplyMelaFormModal({
                     </div>
                   )}
                 </div>
-                </>
+                </div>
               ))}
 
               <Button

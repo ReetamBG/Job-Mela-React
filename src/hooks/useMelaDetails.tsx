@@ -1,3 +1,5 @@
+import { useAppSelector } from "@/store/hooks";
+import { selectIsUserResolved } from "@/store/slices/authSlice";
 import type { JobPosting, Mela } from "@/types";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -10,11 +12,14 @@ const useMelaDetails = ({
   pklMelaId: string;
   pklCandidateId?: string;
 }) => {
+  const isUserResolved = useAppSelector(selectIsUserResolved);
   const [melaInfo, setMelaInfo] = useState<Mela | null>(null);
   const [jobPostings, setJobPostings] = useState<JobPosting[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if(!isUserResolved) return    // prevent running if user state is not resolved
+
     const url = import.meta.env.VITE_BASE_URL + "/v1/mela";
 
     (async () => {
@@ -39,7 +44,7 @@ const useMelaDetails = ({
         setIsLoading(false);
       }
     })();
-  }, [pklMelaId, pklCandidateId]);
+  }, [pklMelaId, pklCandidateId, isUserResolved]);
 
   return { melaInfo, jobPostings, setMelaInfo, setJobPostings, isLoading };
 };

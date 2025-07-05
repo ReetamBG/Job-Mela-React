@@ -47,7 +47,7 @@ const JobPostings = ({
     }));
     try {
       setIsSubmitting(true);
-      await fetch(import.meta.env.VITE_BASE_URL + "/v1/candidate/register", {
+      const res = await fetch(import.meta.env.VITE_BASE_URL + "/v1/candidate/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,6 +58,11 @@ const JobPostings = ({
           applications: jobPostDetails,
         }),
       });
+      const resData = await res.json(); 
+      if (!res.ok || resData.status !== true) {
+        throw new Error(resData.message || "Failed to submit application");
+      }
+
       toast.success("Application submitted successfully!");
       setSelectedJobs([]);
 
