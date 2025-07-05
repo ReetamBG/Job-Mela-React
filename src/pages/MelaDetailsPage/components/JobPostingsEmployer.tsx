@@ -1,14 +1,14 @@
 import EmployerApplyMelaFormModal from "@/pages/MelaDetailsPage/components/EmployerApplyMelaFormModal";
 import Loading from "@/components/customComponents/Loading";
-import useMelaDetails from "@/hooks/useMelaDetails";
-import { useParams } from "react-router-dom";
+import type { JobPosting, Mela } from "@/types";
 
-const JobPostingsEmployer = () => {
-  const { melaId } = useParams<{ melaId: string }>();
-  const { melaInfo, jobPostings, isLoading } = useMelaDetails({
-    pklMelaId: melaId!,
-  });
+interface JobPostingsEmployerProps {
+  melaInfo: Mela | null;
+  jobPostings: JobPosting[];
+  isLoading: boolean;
+}
 
+const JobPostingsEmployer = ({ melaInfo, jobPostings, isLoading }: JobPostingsEmployerProps) => {
   if (isLoading) {
     return <Loading item="Jobs" />;
   }

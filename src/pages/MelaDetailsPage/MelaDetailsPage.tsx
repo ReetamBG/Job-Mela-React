@@ -1,18 +1,42 @@
+import useMelaDetails from "@/hooks/useMelaDetails";
 import JobPostingsCandidate from "@/pages/MelaDetailsPage/components/JobPostingsCandidate";
 import JobPostingsEmployer from "@/pages/MelaDetailsPage/components/JobPostingsEmployer";
 import MelaInfo from "@/pages/MelaDetailsPage/components/MelaInfo";
 import { useAppSelector } from "@/store/hooks";
 import { selectCurrentUser } from "@/store/slices/authSlice";
+import { useParams } from "react-router-dom";
 
 const MelaDetailsPage = () => {
+  const { melaId } = useParams<{ melaId: string }>();
   const user = useAppSelector(selectCurrentUser);
+  const userId =
+    user?.type === "candidate"
+      ? user?.data?.pklCandidateId ?? null
+      : user?.data[0]?.pklEntityId ?? null;
+
+  const { melaInfo, jobPostings, setJobPostings, isLoading } = useMelaDetails({
+    pklMelaId: melaId!,
+    pklCandidateId: userId ? String(userId) : undefined,
+  });
+
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
-      <MelaInfo />
+      <MelaInfo melaInfo={melaInfo} isLoading={isLoading} />
       {!user || user.type === "candidate" ? (
-        <JobPostingsCandidate />
+        <JobPostingsCandidate
+          melaId={melaId!}
+          jobPostings={jobPostings}
+          setJobPostings={setJobPostings}
+          isLoading={isLoading}
+          userId={userId}
+          user={user}
+        />
       ) : (
-        <JobPostingsEmployer />
+        <JobPostingsEmployer
+          melaInfo={melaInfo}
+          jobPostings={jobPostings}
+          isLoading={isLoading}
+        />
       )}
     </div>
   );

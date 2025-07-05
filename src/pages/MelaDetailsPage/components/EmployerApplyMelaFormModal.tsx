@@ -122,9 +122,12 @@ export default function EmployerApplyMelaFormModal({
     });
 
     const submissionData = {
+      melaID: mela.pklMelaId,
       fklEmployerId: employerId,
       jobList,
     };
+
+    console.log("Submitting data: ", submissionData);
 
     try {
       const res = await fetch(

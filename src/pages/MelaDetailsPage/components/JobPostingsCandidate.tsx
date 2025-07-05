@@ -2,34 +2,36 @@ import Loading from "@/components/customComponents/Loading";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import useMelaDetails from "@/hooks/useMelaDetails";
-import { useAppSelector } from "@/store/hooks";
-import { selectCurrentUser } from "@/store/slices/authSlice";
-import type { JobPosting } from "@/types";
+import type { CandidateUser, JobPosting } from "@/types";
 import { Loader } from "lucide-react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const JobPostings = () => {
-  const { melaId } = useParams<{ melaId: string }>(); // fetch melaId from URL params
-  const user = useAppSelector(selectCurrentUser); // fetch current user from Redux store
-  const userId = user?.type === "candidate" ? user?.data?.pklCandidateId : null;
+interface JobPostingsProps {
+  user: CandidateUser | null;
+  userId: number | null;
+  melaId: string;
+  jobPostings: JobPosting[];
+  setJobPostings: React.Dispatch<React.SetStateAction<JobPosting[]>>;
+  isLoading: boolean;
+}
 
+const JobPostings = ({
+  melaId,
+  jobPostings,
+  setJobPostings,
+  userId,
+  isLoading,
+  user,
+}: JobPostingsProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedJobs, setSelectedJobs] = useState<JobPosting[]>([]);
 
-  // fetch job postings for the mela based on user
-  const { jobPostings, setJobPostings, isLoading } = useMelaDetails({
-    pklMelaId: melaId!,
-    pklCandidateId: userId ? String(userId) : undefined,
-  });
-
   const filteredJobPostings = jobPostings.filter((job) => job.isEligible !== 1);
 
-  const areJobsLeftToApply = filteredJobPostings.some(job => 
-    job.isApplied !== 1
-  )
+  const areJobsLeftToApply = filteredJobPostings.some(
+    (job) => job.isApplied !== 1
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -179,13 +181,13 @@ const JobPostings = () => {
                 // only show the apply button if there are jobs left to apply
                 areJobsLeftToApply && (
                   <Button type="submit" className="rounded-full h-10">
-                  {isSubmitting ? (
-                    <Loader className="animate-spin" />
-                  ) : (
-                    "Apply for Selected Jobs"
-                  )}
-                </Button>
-                ) 
+                    {isSubmitting ? (
+                      <Loader className="animate-spin" />
+                    ) : (
+                      "Apply for Selected Jobs"
+                    )}
+                  </Button>
+                )
               )}
             </div>
           </form>

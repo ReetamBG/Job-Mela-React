@@ -1,12 +1,13 @@
 import Loading from "@/components/customComponents/Loading";
-import useMelaDetails from "@/hooks/useMelaDetails";
 import { formatDate, getDaysRemaining } from "@/lib/dateTime";
-import { useParams } from "react-router-dom";
+import type { Mela } from "@/types";
 
-const MelaInfo = () => {
-  const { melaId } = useParams<{ melaId: string }>();
-  const { melaInfo, isLoading } = useMelaDetails({ pklMelaId: melaId! });
+interface MelaInfoProps {
+  melaInfo: Mela | null;
+  isLoading: boolean;
+}
 
+const MelaInfo = ({ melaInfo, isLoading }: MelaInfoProps) => {
   if (isLoading) return <Loading item="Mela Information" />;
 
   if (!melaInfo) {

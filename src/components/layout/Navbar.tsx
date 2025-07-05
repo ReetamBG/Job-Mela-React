@@ -19,13 +19,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Activity,
-  ArrowDown,
+  // Activity,
+  // ArrowDown,
   LayoutDashboard,
   LogOut,
   MapPin,
   Menu,
-  Settings,
+  // Settings,
   Shuffle,
   User as UserIcon,
 } from "lucide-react";
@@ -135,7 +135,6 @@ const Navbar = () => {
             </a>
           </div>
 
-          {/* Right Content */}
           <div className="flex flex-col md:w-1/2 bg-white/30 p-6 rounded-md shadow-md max-w-xl">
             <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-2">
               Empowering Careers Through Skills
@@ -171,10 +170,10 @@ function DesktopUserSection({
       {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <button className="cursor-pointer size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center">
+            <span className="cursor-pointer size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center">
               {user.type === "candidate" && user.data.firstName.slice(0, 1)}
               {user.type === "Employer" && user.data[0].userName.slice(0, 1)}
-            </button>
+            </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="z-100 absolute top-2 -right-5 rounded-sm w-60 px-5">
             {/* Profile icon and name */}
@@ -201,16 +200,16 @@ function DesktopUserSection({
               icon: <UserIcon size={15} />,
               link: `https://public-registration.skillmissionassam.org/profile/${jwtToken ? `?token=${jwtToken}` : ""}`,
             },
-            {
-              name: "My Activities",
-              icon: <Activity size={15} />,
-              link: "#",
-            },
-            {
-              name: "Settings",
-              icon: <Settings size={15} />,
-              link: "#",
-            },
+            // {
+            //   name: "My Activities",
+            //   icon: <Activity size={15} />,
+            //   link: "#",
+            // },
+            // {
+            //   name: "Settings",
+            //   icon: <Settings size={15} />,
+            //   link: "#",
+            // },
             ].map((item) => (
               <DropdownMenuItem
                 key={item.name}
@@ -263,6 +262,11 @@ function DesktopNavLinks({
   setShowMore: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 
+  // eslint-disable-next-line no-constant-condition
+  if(false) {
+    setShowMore(false);     // keeping this for placeholder, have to add this functionality later but cannot compile without this
+  }
+
   const links = [
     {
       name: "Schemes / Programs",
@@ -309,14 +313,14 @@ function DesktopNavLinks({
             <span>{link.name}</span>
           </a>
         ))}
-        <button
+        {/* <button
           onClick={() => setShowMore((prev) => !prev)}
           className="text-sm text-gray-700 flex items-center gap-2 hover:underline cursor-pointer"
         >
           <Menu size={15} />
           <span>More</span>
           <ArrowDown size={15}/>
-        </button>
+        </button> */}
       </nav>
     </div>
   );
