@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   // Activity,
-  // ArrowDown,
+  ArrowDown,
   LayoutDashboard,
   LogOut,
   MapPin,
@@ -56,14 +56,12 @@ const Navbar = () => {
 
     // needed to redirect to links with the token
     if (token) setJwtToken(token);
-    
+
     if (decodedUser) {
-      dispatch(setUser(decodedUser))
+      dispatch(setUser(decodedUser));
+    } else {
+      dispatch(setUser(null));
     }
-    else {
-      dispatch(setUser(null))
-    }
-    
   }, [searchParams, dispatch]);
 
   const handleLogout = () => {
@@ -83,13 +81,13 @@ const Navbar = () => {
           >
             <img
               alt="Logo"
-              className="h-10 xl:h-14 object-contain object-center pr-3"
+              className="h-10 xl:h-14 object-contain object-center pr-4"
               src="https://skillmission.assam.gov.in/images/emblem-logo.png"
             />
             <img
               alt="Logo"
-              className="h-10 xl:h-14 object-contain object-center pl-3"
-              src="https://skillmission.assam.gov.in/images/logo.png"
+              className="h-10 xl:h-14 object-contain object-center px-4"
+              src="/images/logo.png"
             />
             <div className="flex flex-col ml-5">
               <p className="text-sm lg:text-3xl text-gray-700 font-semibold">
@@ -106,7 +104,11 @@ const Navbar = () => {
             jwtToken={jwtToken}
             handleLogout={handleLogout}
           />
-          <DesktopUserSection user={user} handleLogout={handleLogout} jwtToken={jwtToken}/>
+          <DesktopUserSection
+            user={user}
+            handleLogout={handleLogout}
+            jwtToken={jwtToken}
+          />
         </div>
         <DesktopNavLinks jwtToken={jwtToken} setShowMore={setShowMore} />
       </div>
@@ -117,10 +119,10 @@ const Navbar = () => {
           showMore ? "block" : "hidden"
         }`}
       >
-        <div className="w-full px-15 py-10 flex flex-col md:flex-row justify-between gap-8">
+        <div className="w-full px-15 py-10 flex flex-col md:flex-row justify-between gap-8 relative">
           {/* Left Menu */}
           <div className="flex flex-col gap-10 text-gray-700 md:w-1/2">
-            <a href="#" className="flex gap-4 items-start">
+            <a href="https://ds1.skillmissionassam.org/centerSearch/#/centerLocation/14" className="flex gap-4 items-start">
               <MapPin className="mt-1" />
               <div>
                 <p className="text-lg font-semibold">Skill Centers</p>
@@ -128,7 +130,7 @@ const Navbar = () => {
               </div>
             </a>
 
-            <a href="#" className="flex gap-4 items-start">
+            <a href="https://convergence_v1.skillmissionassam.org/" className="flex gap-4 items-start">
               <Shuffle className="mt-1" />
               <div>
                 <p className="text-lg font-semibold">Convergence</p>
@@ -136,6 +138,7 @@ const Navbar = () => {
               </div>
             </a>
           </div>
+          
 
           <div className="flex flex-col md:w-1/2 bg-white/30 p-6 rounded-md shadow-md max-w-xl">
             <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-2">
@@ -146,9 +149,12 @@ const Navbar = () => {
               platform to build your future.
             </p>
             {/* Image Placeholder */}
-            <div className="w-full h-48 md:h-56 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-black font-medium">Photo ???</span>
-            </div>
+            <div className="h-50 overflow-hidden" />
+            <img
+                src="/images/asset.png"
+                alt="girl working on laptop"
+                className="object-contain absolute size-90 right-0 -bottom-12"
+              />
           </div>
         </div>
       </div>
@@ -192,38 +198,43 @@ function DesktopUserSection({
 
             {/* DropDown Items */}
             <div className="space-y-2">
-            {[{
-              name: "My Dashboard",
-              icon: <LayoutDashboard size={15} />,
-              link: `https://public-registration.skillmissionassam.org/dashboard/${jwtToken ? `?token=${jwtToken}` : ""}`,
-            },
-            {
-              name: "My Profile",
-              icon: <UserIcon size={15} />,
-              link: `https://public-registration.skillmissionassam.org/profile/${jwtToken ? `?token=${jwtToken}` : ""}`,
-            },
-            // {
-            //   name: "My Activities",
-            //   icon: <Activity size={15} />,
-            //   link: "#",
-            // },
-            // {
-            //   name: "Settings",
-            //   icon: <Settings size={15} />,
-            //   link: "#",
-            // },
-            ].map((item) => (
-              <DropdownMenuItem
-                key={item.name}
-                className="text-base text-gray-700"
-              >
-                <a href={item.link} className="flex gap-2 items-center">
-                {item.icon}
-                {item.name}
-                </a>
+              {[
+                {
+                  name: "My Dashboard",
+                  icon: <LayoutDashboard size={15} />,
+                  link: `https://public-registration.skillmissionassam.org/dashboard/${
+                    jwtToken ? `?token=${jwtToken}` : ""
+                  }`,
+                },
+                {
+                  name: "My Profile",
+                  icon: <UserIcon size={15} />,
+                  link: `https://public-registration.skillmissionassam.org/profile/${
+                    jwtToken ? `?token=${jwtToken}` : ""
+                  }`,
+                },
+                // {
+                //   name: "My Activities",
+                //   icon: <Activity size={15} />,
+                //   link: "#",
+                // },
+                // {
+                //   name: "Settings",
+                //   icon: <Settings size={15} />,
+                //   link: "#",
+                // },
+              ].map((item) => (
+                <DropdownMenuItem
+                  key={item.name}
+                  className="text-base text-gray-700"
+                >
+                  <a href={item.link} className="flex gap-2 items-center">
+                    {item.icon}
+                    {item.name}
+                  </a>
                 </DropdownMenuItem>
-            ))}
-  
+              ))}
+
               <DropdownMenuItem
                 className="text-base text-gray-700 flex gap-2 items-center"
                 onClick={handleLogout}
@@ -263,17 +274,13 @@ function DesktopNavLinks({
   jwtToken: string;
   setShowMore: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-
-  // eslint-disable-next-line no-constant-condition
-  if(false) {
-    setShowMore(false);     // keeping this for placeholder, have to add this functionality later but cannot compile without this
-  }
-
   const links = [
     {
       name: "Schemes / Programs",
       icon: "bi bi-bullseye",
-      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""}`, 
+      url: `https://skillcourse.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Recommendations",
@@ -283,12 +290,16 @@ function DesktopNavLinks({
     {
       name: "Skill Courses",
       icon: "bi bi-mortarboard",
-      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""}`,
+      url: `https://skillcourse.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Job Search",
       icon: "bi bi-briefcase",
-      url: `https://jobboard.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""}`,
+      url: `https://jobboard.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Job Melas",
@@ -300,7 +311,7 @@ function DesktopNavLinks({
       icon: "bi bi-headset",
       url: "#",
     },
-  ]
+  ];
 
   return (
     <div className="hidden lg:block border-t border-emerald-400 mt-1 py-2">
@@ -315,14 +326,14 @@ function DesktopNavLinks({
             <span>{link.name}</span>
           </a>
         ))}
-        {/* <button
+        <button
           onClick={() => setShowMore((prev) => !prev)}
           className="text-sm text-gray-700 flex items-center gap-2 hover:underline cursor-pointer"
         >
           <Menu size={15} />
           <span>More</span>
-          <ArrowDown size={15}/>
-        </button> */}
+          <ArrowDown size={15} />
+        </button>
       </nav>
     </div>
   );
@@ -342,7 +353,9 @@ function MobileNav({
     {
       name: "Schemes / Programs",
       icon: "bi bi-bullseye",
-      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""}`,
+      url: `https://skillcourse.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Recommendations",
@@ -352,12 +365,16 @@ function MobileNav({
     {
       name: "Skill Courses",
       icon: "bi bi-mortarboard",
-      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""}`,
+      url: `https://skillcourse.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Job Search",
       icon: "bi bi-briefcase",
-      url: `https://jobboard.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""}`,
+      url: `https://jobboard.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Job Melas",
@@ -368,8 +385,8 @@ function MobileNav({
       name: "Support",
       icon: "bi bi-headset",
       url: "#",
-    }
-  ]
+    },
+  ];
 
   return (
     <Sheet>
@@ -395,35 +412,45 @@ function MobileNav({
           ))}
 
           {/* More section */}
-          <button 
-          className="text-base flex items-center font-medium text-gray-700  gap-2 cursor-pointer" 
-          onClick={() => setShowMore((prev) => !prev)}>
-            <Menu size={20}/> More
+          <button
+            className="text-base flex items-center font-medium text-gray-700  gap-2 cursor-pointer"
+            onClick={() => setShowMore((prev) => !prev)}
+          >
+            <Menu size={20} /> More
           </button>
-          <div className={`flex flex-col gap-8 text-gray-700 text-base font-medium relative left-5 ${showMore ? "block" : "hidden"}`}>
-          <a href="#" className="flex gap-4 items-center">
-              <MapPin size={20}/>
-                <p className="">Skill Centers</p>
+          <div
+            className={`flex flex-col gap-8 text-gray-700 text-base font-medium relative left-5 ${
+              showMore ? "block" : "hidden"
+            }`}
+          >
+            <a href="#" className="flex gap-4 items-center">
+              <MapPin size={20} />
+              <p className="">Skill Centers</p>
             </a>
             <a href="#" className="flex gap-4 items-center">
-              <Shuffle size={20}/>
-                <p className="text-base font-medium">Convergence</p>
+              <Shuffle size={20} />
+              <p className="text-base font-medium">Convergence</p>
             </a>
-            </div>
+          </div>
 
           {/* Profile, Dashboard and Logout */}
           {user ? (
             <>
               <a
-                href={`https://public-registration.skillmissionassam.org/dashboard/${jwtToken ? `?token=${jwtToken}` : ""}`}
+                href={`https://public-registration.skillmissionassam.org/dashboard/${
+                  jwtToken ? `?token=${jwtToken}` : ""
+                }`}
                 className="text-base font-medium text-gray-700 flex gap-2 items-center"
               >
                 <LayoutDashboard size={15} />
                 My Dashboard
               </a>
-              <a 
-              href={`https://public-registration.skillmissionassam.org/profile/${jwtToken ? `?token=${jwtToken}` : ""}`}
-              className="text-base font-medium text-gray-700">
+              <a
+                href={`https://public-registration.skillmissionassam.org/profile/${
+                  jwtToken ? `?token=${jwtToken}` : ""
+                }`}
+                className="text-base font-medium text-gray-700"
+              >
                 <i className="bi bi-person" />
                 My Profile
               </a>
