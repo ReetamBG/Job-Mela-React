@@ -39,16 +39,26 @@ export interface CandidateData {
 
 export interface EmployerData {
   pklEntityId: number;
-    companyName: string;
-    roleId: number;
-    userName: string;
-    companyAddress: string;
-    companyEmail: string;
-    companyMobile: string;
-    companyPinCode: string;
-    empTypeId: number;
-    organizationTypeId: number | null;
-    organizationTypeName: string | null;
+  companyName: string;
+  roleId: number;
+  userName: string;
+  companyAddress: string;
+  companyEmail: string;
+  companyMobile: string;
+  companyPinCode: string;
+  empTypeId: number;
+  organizationTypeId: number | null;
+  organizationTypeName: string | null;
+}
+
+export interface MelaAdminData {
+  fklMelaId: number;
+  pklLoginId: number;
+  pklRoleId: number;
+  venueName: string;
+  vsLoginName: string;
+  vsPassword: string;
+  vsRoleName: string;
 }
 
 export interface CandidateUser {
@@ -56,15 +66,21 @@ export interface CandidateUser {
   data: CandidateData;
 }
 
-export interface EmployerUser { 
+export interface EmployerUser {
   admin_id: number;
   login_name: string;
-  type: 'Employer';
+  type: "Employer";
   data: EmployerData[];
-};
+}
 
-export type User = CandidateUser | EmployerUser;
+export interface MelaAdmin {
+  type: "Mela Admin";
+  admin_id: number;
+  login_name: string;
+  data: MelaAdminData;
+}
 
+export type User = CandidateUser | EmployerUser | MelaAdmin;
 
 // Company related Types
 export interface Company {

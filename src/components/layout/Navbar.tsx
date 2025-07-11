@@ -48,8 +48,10 @@ const Navbar = () => {
       decodedUser = decodeJwt<User>(token);
     } else {
       token = searchParams.get("token");
+      console.log("Token from URL:", token);
       if (token) {
         decodedUser = decodeJwt<User>(token);
+        console.log("Decoded User:", decodedUser);
         Cookies.set("token", token, { expires: 7 });
       }
     }
@@ -69,6 +71,10 @@ const Navbar = () => {
     Cookies.remove("token");
     window.location.href = "/";
   };
+
+  if(user?.type === "Mela Admin") {
+    return null
+  }
 
   return (
     <section className="sticky top-0 z-[999]">
@@ -90,11 +96,14 @@ const Navbar = () => {
               src="/images/logo.png"
             />
             <div className="flex flex-col ml-5">
-              <p className="text-sm lg:text-3xl text-gray-700 font-semibold">
+              <p className="text-sm leading-8 lg:text-3xl text-gray-700 font-semibold">
+                Digital Skill Center
+              </p>
+              <p className="text-xs lg:text-sm font-medium text-gray-700/80">
                 Assam Skill Developement Mission
               </p>
-              <p className="text-xs lg:text-sm font-medium text-gray-700">
-                Digital Skill Center
+              <p className="text-xs leading-2 lg:text-sm font-medium text-gray-700/80">
+                Government of Assam
               </p>
             </div>
           </Link>
@@ -115,9 +124,8 @@ const Navbar = () => {
 
       {/* More section */}
       <div
-        className={`absolute w-[85%] left-1/2 -translate-x-1/2 top-35 rounded-xl bg-white/30 backdrop-blur-md shadow-md z-[9998] transition-all ${
-          showMore ? "block" : "hidden"
-        }`}
+        className={`absolute w-[85%] left-1/2 -translate-x-1/2 top-35 rounded-xl bg-white/30 backdrop-blur-md shadow-md z-[9998] transition-all ${showMore ? "block" : "hidden"
+          }`}
       >
         <div className="w-full px-15 py-10 flex flex-col md:flex-row justify-between gap-8 relative">
           {/* Left Menu */}
@@ -138,7 +146,7 @@ const Navbar = () => {
               </div>
             </a>
           </div>
-          
+
 
           <div className="flex flex-col md:w-1/2 bg-white/30 p-6 rounded-md shadow-md max-w-xl">
             <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-2">
@@ -151,10 +159,10 @@ const Navbar = () => {
             {/* Image Placeholder */}
             <div className="h-50 overflow-hidden" />
             <img
-                src="/images/asset.png"
-                alt="girl working on laptop"
-                className="object-contain absolute size-90 right-0 -bottom-12"
-              />
+              src="/images/asset.png"
+              alt="girl working on laptop"
+              className="object-contain absolute size-90 right-0 -bottom-12"
+            />
           </div>
         </div>
       </div>
@@ -187,8 +195,8 @@ function DesktopUserSection({
             {/* Profile icon and name */}
             <DropdownMenuItem className="text-lg text-gray-700">
               <button className="mx-2 cursor-pointer size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center">
-                {user.type === "candidate" && user.data.firstName.slice(0, 1)}
-                {user.type === "Employer" && user.data[0].userName.slice(0, 1)}
+                {user.type === "candidate" && user.data.firstName.slice(0, 1).toUpperCase()}
+                {user.type === "Employer" && user.data[0].userName.slice(0, 1).toUpperCase()}
               </button>
               {user.type === "candidate" &&
                 user.data.firstName + " " + user.data.lastName}
@@ -202,16 +210,14 @@ function DesktopUserSection({
                 {
                   name: "My Dashboard",
                   icon: <LayoutDashboard size={15} />,
-                  link: `https://public-registration.skillmissionassam.org/dashboard/${
-                    jwtToken ? `?token=${jwtToken}` : ""
-                  }`,
+                  link: `https://public-registration.skillmissionassam.org/dashboard/${jwtToken ? `?token=${jwtToken}` : ""
+                    }`,
                 },
                 {
                   name: "My Profile",
                   icon: <UserIcon size={15} />,
-                  link: `https://public-registration.skillmissionassam.org/profile/${
-                    jwtToken ? `?token=${jwtToken}` : ""
-                  }`,
+                  link: `https://public-registration.skillmissionassam.org/profile/${jwtToken ? `?token=${jwtToken}` : ""
+                    }`,
                 },
                 // {
                 //   name: "My Activities",
@@ -278,9 +284,8 @@ function DesktopNavLinks({
     {
       name: "Schemes / Programs",
       icon: "bi bi-bullseye",
-      url: `https://skillcourse.skillmissionassam.org/${
-        jwtToken ? `?token=${jwtToken}` : ""
-      }`,
+      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
+        }`,
     },
     {
       name: "Recommendations",
@@ -290,16 +295,14 @@ function DesktopNavLinks({
     {
       name: "Skill Courses",
       icon: "bi bi-mortarboard",
-      url: `https://skillcourse.skillmissionassam.org/${
-        jwtToken ? `?token=${jwtToken}` : ""
-      }`,
+      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
+        }`,
     },
     {
       name: "Job Search",
       icon: "bi bi-briefcase",
-      url: `https://jobboard.skillmissionassam.org/${
-        jwtToken ? `?token=${jwtToken}` : ""
-      }`,
+      url: `https://jobboard.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
+        }`,
     },
     {
       name: "Job Melas",
@@ -353,9 +356,8 @@ function MobileNav({
     {
       name: "Schemes / Programs",
       icon: "bi bi-bullseye",
-      url: `https://skillcourse.skillmissionassam.org/${
-        jwtToken ? `?token=${jwtToken}` : ""
-      }`,
+      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
+        }`,
     },
     {
       name: "Recommendations",
@@ -365,16 +367,14 @@ function MobileNav({
     {
       name: "Skill Courses",
       icon: "bi bi-mortarboard",
-      url: `https://skillcourse.skillmissionassam.org/${
-        jwtToken ? `?token=${jwtToken}` : ""
-      }`,
+      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
+        }`,
     },
     {
       name: "Job Search",
       icon: "bi bi-briefcase",
-      url: `https://jobboard.skillmissionassam.org/${
-        jwtToken ? `?token=${jwtToken}` : ""
-      }`,
+      url: `https://jobboard.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
+        }`,
     },
     {
       name: "Job Melas",
@@ -419,9 +419,8 @@ function MobileNav({
             <Menu size={20} /> More
           </button>
           <div
-            className={`flex flex-col gap-8 text-gray-700 text-base font-medium relative left-5 ${
-              showMore ? "block" : "hidden"
-            }`}
+            className={`flex flex-col gap-8 text-gray-700 text-base font-medium relative left-5 ${showMore ? "block" : "hidden"
+              }`}
           >
             <a href="#" className="flex gap-4 items-center">
               <MapPin size={20} />
@@ -437,18 +436,16 @@ function MobileNav({
           {user ? (
             <>
               <a
-                href={`https://public-registration.skillmissionassam.org/dashboard/${
-                  jwtToken ? `?token=${jwtToken}` : ""
-                }`}
+                href={`https://public-registration.skillmissionassam.org/dashboard/${jwtToken ? `?token=${jwtToken}` : ""
+                  }`}
                 className="text-base font-medium text-gray-700 flex gap-2 items-center"
               >
                 <LayoutDashboard size={15} />
                 My Dashboard
               </a>
               <a
-                href={`https://public-registration.skillmissionassam.org/profile/${
-                  jwtToken ? `?token=${jwtToken}` : ""
-                }`}
+                href={`https://public-registration.skillmissionassam.org/profile/${jwtToken ? `?token=${jwtToken}` : ""
+                  }`}
                 className="text-base font-medium text-gray-700"
               >
                 <i className="bi bi-person" />
@@ -479,6 +476,6 @@ function MobileNav({
           )}
         </nav>
       </SheetContent>
-    </Sheet>
+    </Sheet >
   );
 }

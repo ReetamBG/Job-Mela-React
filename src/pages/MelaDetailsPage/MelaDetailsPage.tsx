@@ -9,10 +9,15 @@ import { useParams } from "react-router-dom";
 const MelaDetailsPage = () => {
   const { melaId } = useParams<{ melaId: string }>();
   const user = useAppSelector(selectCurrentUser);
-  const userId =
-    user?.type === "candidate"
-      ? user?.data?.pklCandidateId ?? null
-      : user?.data[0]?.pklEntityId ?? null;
+  
+  let userId;
+  if (user?.type === "Mela Admin") {
+    userId = null;
+  } else if (user?.type === "candidate") {
+    userId = user?.data?.pklCandidateId ?? null;
+  } else {
+    userId = user?.data[0]?.pklEntityId ?? null;
+  }
 
   const { melaInfo, jobPostings, setJobPostings, isLoading } = useMelaDetails({
     pklMelaId: melaId!,
