@@ -18,6 +18,7 @@ import { Form } from "@/components/ui/form";
 import {
   FormInput,
   FormSelect,
+  FormMultiDatePicker,
 } from "@/components/customComponents/FormFields";
 import type { Mela } from "@/types";
 import { toast } from "react-toastify";
@@ -26,14 +27,11 @@ import { useAppSelector } from "@/store/hooks";
 import { selectCurrentUser } from "@/store/slices/authSlice";
 import { useState } from "react";
 
-export default function EmployerApplyMelaFormModal({
-  mela,
-}: {
-  mela: Mela;
-}) {
+export default function EmployerApplyMelaFormModal({ mela }: { mela: Mela }) {
   const [isOpen, setIsOpen] = useState(false);
-  const user = useAppSelector(selectCurrentUser)
-  const employerId = user?.type === "Employer" ? user.data[0].pklEntityId : null;
+  const user = useAppSelector(selectCurrentUser);
+  const employerId =
+    user?.type === "Employer" ? user.data[0].pklEntityId : null;
   const jobPostSchema = z
     .object({
       vsPostName: z.string().min(1, "Post name is required"),
@@ -46,24 +44,21 @@ export default function EmployerApplyMelaFormModal({
       }),
       dtInterviewStartTime: z.string().min(1, "Start time is required"),
       dtInterviewEndTime: z.string().min(1, "End time is required"),
-      participationStartDate: z.string().min(1, "Start date is required"),
-      participationEndDate: z.string().min(1, "End date is required"),
+      participationDates: z
+        .array(z.string())
+        .min(1, "Select at least one participation date"),
       vsSelectionProcedure: z.enum(["online", "offline"]),
     })
     .refine(
-      (data) => data.participationStartDate <= data.participationEndDate,
+      (data) => {
+        // Check if all participation dates fall within the mela date range
+        return data.participationDates.every(
+          (date) => date >= mela.dtStartDate && date <= mela.dtEndDate
+        );
+      },
       {
-        message: "Start date must be before or equal to end date",
-        path: ["participationEndDate"],
-      }
-    )
-    .refine(
-      (data) =>
-        data.participationStartDate >= mela.dtStartDate &&
-        data.participationEndDate <= mela.dtEndDate,
-      {
-        message: "Participation dates must fall within the mela date range",
-        path: ["participationEndDate"],
+        message: "All participation dates must fall within the mela date range",
+        path: ["participationDates"],
       }
     );
 
@@ -91,8 +86,7 @@ export default function EmployerApplyMelaFormModal({
           fklMinQalificationId: undefined,
           dtInterviewStartTime: "",
           dtInterviewEndTime: "",
-          participationStartDate: "",
-          participationEndDate: "",
+          participationDates: [],
           vsSelectionProcedure: "online",
         },
       ],
@@ -114,10 +108,7 @@ export default function EmployerApplyMelaFormModal({
         dtInterviewStartTime: job.dtInterviewStartTime,
         dtInterviewEndTime: job.dtInterviewEndTime,
         vsSelectionProcedure: job.vsSelectionProcedure,
-        participationDates: [
-          job.participationStartDate,
-          job.participationEndDate,
-        ],
+        participationDates: job.participationDates,
       };
     });
 
@@ -164,7 +155,7 @@ export default function EmployerApplyMelaFormModal({
         <Button className="rounded-full h-8">Apply for Mela</Button>
       </DialogTrigger>
 
-      <DialogContent className="w-full max-w-[95%] sm:max-w-8xl max-h-[82vh] overflow-y-auto">
+      <DialogContent className="w-full max-w-[95%] sm:max-w-8xl max-h-[80vh] top-4/7 overflow-y-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <DialogHeader>
@@ -177,13 +168,11 @@ export default function EmployerApplyMelaFormModal({
             <div className="space-y-6">
               {fields.map((field, index) => (
                 <div key={index}>
-                <p className="font-semibold text-xl">Job Post {index + 1}</p>
-                <div
-                key={field.id}
-                className="border p-6 rounded-lg space-y-2 relative bg-muted grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-                >
-                
-                    {/* Post name */}
+                  <p className="font-semibold text-xl">Job Post {index + 1}</p>
+                  <div
+                    key={field.id}
+                    className="border p-6 rounded-lg bg-muted grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                  >
                     <FormInput
                       name={`jobList.${index}.vsPostName`}
                       label="Post Name"
@@ -191,7 +180,6 @@ export default function EmployerApplyMelaFormModal({
                       placeholder="Enter post name"
                     />
 
-                    {/* Minimum qualification */}
                     <FormSelect
                       name={`jobList.${index}.fklMinQalificationId`}
                       label="Minimum Qualification"
@@ -199,9 +187,7 @@ export default function EmployerApplyMelaFormModal({
                       options={qualificationOptions}
                       placeholder="Select qualification"
                     />
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                  {/* Number of vacancies */}
+
                     <FormInput
                       name={`jobList.${index}.iVacancy`}
                       label="Vacancies"
@@ -210,7 +196,6 @@ export default function EmployerApplyMelaFormModal({
                       placeholder="Enter number of vacancies"
                     />
 
-                    {/* Interview Duration */}
                     <FormInput
                       name={`jobList.${index}.iInterviewDurationMin`}
                       label="Interview Duration (min)"
@@ -218,10 +203,7 @@ export default function EmployerApplyMelaFormModal({
                       control={form.control}
                       placeholder="Enter duration in minutes"
                     />
-                    </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                  {/* Interview start time */}
                     <FormInput
                       name={`jobList.${index}.dtInterviewStartTime`}
                       label="Interview Start Time"
@@ -229,56 +211,45 @@ export default function EmployerApplyMelaFormModal({
                       control={form.control}
                     />
 
-                    {/* Interview end time */}
                     <FormInput
                       name={`jobList.${index}.dtInterviewEndTime`}
                       label="Interview End Time"
                       type="time"
                       control={form.control}
                     />
+
+                    <FormMultiDatePicker
+                      name={`jobList.${index}.participationDates`}
+                      label="Participation Dates"
+                      control={form.control}
+                      minDate={new Date(mela.dtStartDate)}
+                      maxDate={new Date(mela.dtEndDate)}
+                      placeholder="Select participation dates"
+                    />
+
+                    <FormSelect
+                      name={`jobList.${index}.vsSelectionProcedure`}
+                      label="Selection Procedure"
+                      control={form.control}
+                      options={[
+                        { value: "online", label: "Online" },
+                        { value: "offline", label: "Offline" },
+                      ]}
+                    />
+
+                    {index > 0 && (
+                      <div className="flex justify-end col-span-full">
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => remove(index)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    )}
                   </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                  {/* participation dates */}
-                    <FormInput
-                      name={`jobList.${index}.participationStartDate`}
-                      label="Participation Start Date"
-                      type="date"
-                      control={form.control}
-                    />
-                    <FormInput
-                      name={`jobList.${index}.participationEndDate`}
-                      label="Participation End Date"
-                      type="date"
-                      control={form.control}
-                    />
-                    </div>
-
-                  <FormSelect
-                    name={`jobList.${index}.vsSelectionProcedure`}
-                    label="Selection Procedure"
-                    control={form.control}
-                    options={[
-                      { value: "online", label: "Online" },
-                      { value: "offline", label: "Offline" },
-                    ]}
-                  />
-
-                  
-                  {index > 0 && (
-                    <div className="flex justify-end items-center w-full col-span-2">
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => remove(index)}
-                        className=""
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  )}
-                </div>
                 </div>
               ))}
 
@@ -292,8 +263,7 @@ export default function EmployerApplyMelaFormModal({
                     fklMinQalificationId: qualificationOptions?.[0]?.value || 1,
                     dtInterviewStartTime: "",
                     dtInterviewEndTime: "",
-                    participationStartDate: "",
-                    participationEndDate: "",
+                    participationDates: [],
                     vsSelectionProcedure: "online",
                   })
                 }

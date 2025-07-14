@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import useCandidates from "@/hooks/adminPageHooks/useCandidates";
 import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -19,9 +19,9 @@ const CandidatesTab = () => {
   });
 
   const [search, setSearch] = useState("");
-  const [presentCandidates, setPresentCandidates] = useState<Set<number>>(
-    new Set()
-  );
+  // const [presentCandidates, setPresentCandidates] = useState<Set<number>>(
+  //   new Set()
+  // );
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -43,14 +43,14 @@ const CandidatesTab = () => {
 
   const totalPages = Math.ceil(filteredCandidates.length / itemsPerPage);
 
-  const toggleAttendance = (id: number, checked: boolean) => {
-    setPresentCandidates((prev) => {
-      const updated = new Set(prev);
-      if (checked) updated.add(id);
-      else updated.delete(id);
-      return updated;
-    });
-  };
+  // const toggleAttendance = (id: number, checked: boolean) => {
+  //   setPresentCandidates((prev) => {
+  //     const updated = new Set(prev);
+  //     if (checked) updated.add(id);
+  //     else updated.delete(id);
+  //     return updated;
+  //   });
+  // };
 
   return (
     <div className="space-y-5">
@@ -91,7 +91,7 @@ const CandidatesTab = () => {
                 <th className="text-left px-3 font-medium">Mobile</th>
                 <th className="text-left px-3 font-medium">DOB</th>
                 <th className="text-left px-3 font-medium">Activity</th>
-                <th className="text-left px-3 font-medium">Checked In</th>
+                {/* <th className="text-left px-3 font-medium">Checked In</th> */}
               </tr>
             </thead>
             <tbody>
@@ -109,7 +109,7 @@ const CandidatesTab = () => {
                 </tr>
               ) : (
                 paginatedCandidates.map((c, idx) => {
-                  const isPresent = presentCandidates.has(c.candidateId);
+                  // const isPresent = presentCandidates.has(c.candidateId);
                   return (
                     <tr key={c.candidateId} className="border-t h-10">
                       <td className="px-3">
@@ -124,16 +124,17 @@ const CandidatesTab = () => {
                       </td>
                       <td className="px-3 hover:underline text-blue-600">
                         <span
+                        className="cursor-pointer"
                           onClick={() =>
                             navigate(`/admin/candidates/${c.candidateId}`, {
                               state: { candidate: c },
                             })
                           }
                         >
-                          Click{" "}
+                          View
                         </span>
                       </td>
-                      <td className="px-3" onClick={(e) => e.stopPropagation()}>
+                      {/* <td className="px-3" onClick={(e) => e.stopPropagation()}>
                         <Checkbox
                           checked={isPresent}
                           onClick={() =>
@@ -143,7 +144,7 @@ const CandidatesTab = () => {
                             toggleAttendance(c.candidateId, Boolean(checked))
                           }
                         />
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })
