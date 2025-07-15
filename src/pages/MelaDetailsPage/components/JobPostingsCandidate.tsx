@@ -6,6 +6,15 @@ import type { CandidateUser, JobPosting } from "@/types";
 import { Loader } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 interface JobPostingsProps {
   user: CandidateUser | null;
@@ -47,18 +56,21 @@ const JobPostings = ({
     }));
     try {
       setIsSubmitting(true);
-      const res = await fetch(import.meta.env.VITE_BASE_URL + "/v1/candidate/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          candidateId: userId,
-          melaID: melaId,
-          applications: jobPostDetails,
-        }),
-      });
-      const resData = await res.json(); 
+      const res = await fetch(
+        import.meta.env.VITE_BASE_URL + "/v1/candidate/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            candidateId: userId,
+            melaID: melaId,
+            applications: jobPostDetails,
+          }),
+        }
+      );
+      const resData = await res.json();
       if (!res.ok || resData.status !== true) {
         throw new Error(resData.message || "Failed to submit application");
       }
@@ -113,7 +125,7 @@ const JobPostings = ({
             <br />
             You can select multiple postings and apply for them all at once.
           </p>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} id="job-application-form">
             <div className="max-h-full overflow-y-auto flex flex-col gap-3">
               {filteredJobPostings.map((job, index) => {
                 const isApplied = job.isApplied ? job.isApplied === 1 : 0;
@@ -177,21 +189,11 @@ const JobPostings = ({
             </div>
             <div className="flex justify-end mt-4">
               {!user ? (
-                <a href="https://public-registration.skillmissionassam.org/register?redirect=https://job-mela.skillmissionassam.org/">
-                  <Button type="button" className="rounded-full h-10">
-                    Apply for Mela
-                  </Button>
-                </a>
+                <ApplyDialog />
               ) : (
                 // only show the apply button if there are jobs left to apply
                 areJobsLeftToApply && (
-                  <Button type="submit" className="rounded-full h-10">
-                    {isSubmitting ? (
-                      <Loader className="animate-spin" />
-                    ) : (
-                      "Apply for Selected Jobs"
-                    )}
-                  </Button>
+                  <ApplyDialog user={user} isSubmitting={isSubmitting} />
                 )
               )}
             </div>
@@ -203,3 +205,61 @@ const JobPostings = ({
 };
 
 export default JobPostings;
+
+const ApplyDialog = ({
+  user,
+  isSubmitting,
+}: {
+  user?: CandidateUser | null;
+  isSubmitting?: boolean;
+}) => (
+  <Dialog>
+    <Button asChild className="rounded-full">
+      <DialogTrigger>Apply for mela</DialogTrigger>
+    </Button>
+    {user ? (
+      <DialogContent className="w-auto">
+        <DialogHeader className="px-4">
+          <DialogTitle>
+            Are you sure you want to apply for the selected melas?
+          </DialogTitle>
+        </DialogHeader>
+        <div className="flex gap-4 justify-end">
+          <Button type="submit" form="job-application-form" className="">
+            {isSubmitting ? <Loader className="animate-spin" /> : "Yes"}
+          </Button>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+        </div>
+      </DialogContent>
+    ) : (
+      <DialogContent className="w-auto">
+        <DialogHeader>
+          <DialogTitle>Almost there!</DialogTitle>
+          <DialogDescription>
+            You need to log in or register to apply for this job.
+            <br />
+            It only takes a minute to get started!
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex gap-4 justify-end">
+          <Button asChild>
+            <a
+              href={`https://public-registration.skillmissionassam.org/login?redirect=${window.location.href}`}
+            >
+              Login
+            </a>
+          </Button>
+          <Button asChild>
+            <a
+              href={`https://public-registration.skillmissionassam.org/register?redirect=${window.location.href}`}
+            >
+              Register
+            </a>
+          </Button>
+        </div>
+      </DialogContent>
+    )}
+  </Dialog>
+);

@@ -5,6 +5,6 @@ export function decodeJwt<T>(token: string): T | null {
     return jwtDecode<T>(token);
   } catch (error) {
     console.error("Failed to decode JWT:", error);
-    return null;
+    throw new Error("Invalid JWT token");
   }
 }

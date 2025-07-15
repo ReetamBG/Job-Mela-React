@@ -19,7 +19,7 @@ interface MelaFilterFormProps {
 
 const MelaFilterForm = ({
   districts,
-  qualifications,
+  // qualifications,
   handleFilterFormSubmit,
 }: MelaFilterFormProps) => {
   const [venueName, setVenueName] = useState("");
@@ -57,7 +57,7 @@ const MelaFilterForm = ({
     >
       {/* Venue Name */}
       <div>
-        <p className="font-bold mb-3">Name</p>
+        <p className="font-bold mb-3">Venue Name</p>
         <input
           type="text"
           placeholder="Search by name..."
@@ -85,7 +85,7 @@ const MelaFilterForm = ({
       </div>
 
       {/* Minimum Qualification */}
-      <div>
+      {/* <div>
         <p className="font-bold mb-3">Minimum Qualification</p>
         <Select onValueChange={setQualification} value={qualification}>
           <SelectTrigger className="w-full">
@@ -102,7 +102,7 @@ const MelaFilterForm = ({
             ))}
           </SelectContent>
         </Select>
-      </div>
+      </div> */}
 
       {/* Sort by Start Date */}
       <div>

@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import {
+  useSearchParams,
+  Link,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   selectCurrentUser,
@@ -21,6 +26,7 @@ import {
 import {
   // Activity,
   ArrowDown,
+  ArrowLeftCircle,
   LayoutDashboard,
   LogOut,
   MapPin,
@@ -29,6 +35,7 @@ import {
   Shuffle,
   User as UserIcon,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   // get JWT token from URL search params
@@ -40,21 +47,30 @@ const Navbar = () => {
 
   const [showMore, setShowMore] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
     let decodedUser: User | null = null;
     let token: string | null = Cookies.get("token") ?? null;
+    // console.log("Token from Cookies:", token);
 
-    if (token) {
+    try {
+      if (token) {
       decodedUser = decodeJwt<User>(token);
     } else {
       token = searchParams.get("token");
-      console.log("Token from URL:", token);
+      // console.log("Token from URL:", token);
       if (token) {
         decodedUser = decodeJwt<User>(token);
         console.log("Decoded User:", decodedUser);
         Cookies.set("token", token, { expires: 7 });
       }
     }
+    } catch {
+      toast.error("Invalid token. Please log in again.",);
+    }
+    
 
     // needed to redirect to links with the token
     if (token) setJwtToken(token);
@@ -72,8 +88,8 @@ const Navbar = () => {
     window.location.href = "/";
   };
 
-  if(user?.type === "Mela Admin") {
-    return null
+  if (user?.type === "Mela Admin") {
+    return null;
   }
 
   return (
@@ -124,13 +140,17 @@ const Navbar = () => {
 
       {/* More section */}
       <div
-        className={`absolute w-[85%] left-1/2 -translate-x-1/2 top-35 rounded-xl bg-white/30 backdrop-blur-md shadow-md z-[9998] transition-all ${showMore ? "block" : "hidden"
-          }`}
+        className={`absolute w-[85%] left-1/2 -translate-x-1/2 top-35 rounded-xl bg-white/30 backdrop-blur-md shadow-md z-[9998] transition-all ${
+          showMore ? "block" : "hidden"
+        }`}
       >
         <div className="w-full px-15 py-10 flex flex-col md:flex-row justify-between gap-8 relative">
           {/* Left Menu */}
           <div className="flex flex-col gap-10 text-gray-700 md:w-1/2">
-            <a href="https://ds1.skillmissionassam.org/centerSearch/#/centerLocation/14" className="flex gap-4 items-start">
+            <a
+              href="https://ds1.skillmissionassam.org/centerSearch/#/centerLocation/14"
+              className="flex gap-4 items-start"
+            >
               <MapPin className="mt-1" />
               <div>
                 <p className="text-lg font-semibold">Skill Centers</p>
@@ -138,7 +158,10 @@ const Navbar = () => {
               </div>
             </a>
 
-            <a href="https://convergence_v1.skillmissionassam.org/" className="flex gap-4 items-start">
+            <a
+              href="https://convergence_v1.skillmissionassam.org/"
+              className="flex gap-4 items-start"
+            >
               <Shuffle className="mt-1" />
               <div>
                 <p className="text-lg font-semibold">Convergence</p>
@@ -146,7 +169,6 @@ const Navbar = () => {
               </div>
             </a>
           </div>
-
 
           <div className="flex flex-col md:w-1/2 bg-white/30 p-6 rounded-md shadow-md max-w-xl">
             <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-2">
@@ -166,6 +188,13 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Back button */}
+      {location.pathname !== "/" && (
+          <button onClick={() => navigate(-1)} className="hidden sm:block relative left-4 top-4 cursor-pointer text-foreground/50">
+            <ArrowLeftCircle size={30} />
+          </button>
+      )}
     </section>
   );
 };
@@ -195,8 +224,10 @@ function DesktopUserSection({
             {/* Profile icon and name */}
             <DropdownMenuItem className="text-lg text-gray-700">
               <button className="mx-2 cursor-pointer size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center">
-                {user.type === "candidate" && user.data.firstName.slice(0, 1).toUpperCase()}
-                {user.type === "Employer" && user.data[0].userName.slice(0, 1).toUpperCase()}
+                {user.type === "candidate" &&
+                  user.data.firstName.slice(0, 1).toUpperCase()}
+                {user.type === "Employer" &&
+                  user.data[0].userName.slice(0, 1).toUpperCase()}
               </button>
               {user.type === "candidate" &&
                 user.data.firstName + " " + user.data.lastName}
@@ -210,14 +241,16 @@ function DesktopUserSection({
                 {
                   name: "My Dashboard",
                   icon: <LayoutDashboard size={15} />,
-                  link: `https://public-registration.skillmissionassam.org/dashboard/${jwtToken ? `?token=${jwtToken}` : ""
-                    }`,
+                  link: `https://public-registration.skillmissionassam.org/dashboard/${
+                    jwtToken ? `?token=${jwtToken}` : ""
+                  }`,
                 },
                 {
                   name: "My Profile",
                   icon: <UserIcon size={15} />,
-                  link: `https://public-registration.skillmissionassam.org/profile/${jwtToken ? `?token=${jwtToken}` : ""
-                    }`,
+                  link: `https://public-registration.skillmissionassam.org/profile/${
+                    jwtToken ? `?token=${jwtToken}` : ""
+                  }`,
                 },
                 // {
                 //   name: "My Activities",
@@ -284,8 +317,9 @@ function DesktopNavLinks({
     {
       name: "Schemes / Programs",
       icon: "bi bi-bullseye",
-      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
-        }`,
+      url: `https://skillcourse.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Recommendations",
@@ -295,19 +329,22 @@ function DesktopNavLinks({
     {
       name: "Skill Courses",
       icon: "bi bi-mortarboard",
-      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
-        }`,
+      url: `https://skillcourse.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Job Search",
       icon: "bi bi-briefcase",
-      url: `https://jobboard.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
-        }`,
+      url: `https://jobboard.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Job Melas",
       icon: "bi bi-calendar-event",
-      url: "#",
+      url: "/",
+      type: "internalLink",
     },
     {
       name: "Support",
@@ -319,16 +356,27 @@ function DesktopNavLinks({
   return (
     <div className="hidden lg:block border-t border-emerald-400 mt-1 py-2">
       <nav className="flex flex-row gap-8">
-        {links.map((link) => (
-          <a
-            key={link.name}
-            href={link.url}
-            className="text-sm text-gray-700 flex items-center gap-2 hover:underline"
-          >
-            <i className={link.icon} />
-            <span>{link.name}</span>
-          </a>
-        ))}
+        {links.map((link) =>
+          link.type === "internalLink" ? (
+            <Link
+              key={link.name}
+              to={link.url}
+              className="text-sm text-gray-700 flex items-center gap-2 hover:underline"
+            >
+              <i className={link.icon} />
+              <span>{link.name}</span>
+            </Link>
+          ) : (
+            <a
+              key={link.name}
+              href={link.url}
+              className="text-sm text-gray-700 flex items-center gap-2 hover:underline"
+            >
+              <i className={link.icon} />
+              <span>{link.name}</span>
+            </a>
+          )
+        )}
         <button
           onClick={() => setShowMore((prev) => !prev)}
           className="text-sm text-gray-700 flex items-center gap-2 hover:underline cursor-pointer"
@@ -356,8 +404,9 @@ function MobileNav({
     {
       name: "Schemes / Programs",
       icon: "bi bi-bullseye",
-      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
-        }`,
+      url: `https://skillcourse.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Recommendations",
@@ -367,14 +416,16 @@ function MobileNav({
     {
       name: "Skill Courses",
       icon: "bi bi-mortarboard",
-      url: `https://skillcourse.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
-        }`,
+      url: `https://skillcourse.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Job Search",
       icon: "bi bi-briefcase",
-      url: `https://jobboard.skillmissionassam.org/${jwtToken ? `?token=${jwtToken}` : ""
-        }`,
+      url: `https://jobboard.skillmissionassam.org/${
+        jwtToken ? `?token=${jwtToken}` : ""
+      }`,
     },
     {
       name: "Job Melas",
@@ -419,8 +470,9 @@ function MobileNav({
             <Menu size={20} /> More
           </button>
           <div
-            className={`flex flex-col gap-8 text-gray-700 text-base font-medium relative left-5 ${showMore ? "block" : "hidden"
-              }`}
+            className={`flex flex-col gap-8 text-gray-700 text-base font-medium relative left-5 ${
+              showMore ? "block" : "hidden"
+            }`}
           >
             <a href="#" className="flex gap-4 items-center">
               <MapPin size={20} />
@@ -436,16 +488,18 @@ function MobileNav({
           {user ? (
             <>
               <a
-                href={`https://public-registration.skillmissionassam.org/dashboard/${jwtToken ? `?token=${jwtToken}` : ""
-                  }`}
+                href={`https://public-registration.skillmissionassam.org/dashboard/${
+                  jwtToken ? `?token=${jwtToken}` : ""
+                }`}
                 className="text-base font-medium text-gray-700 flex gap-2 items-center"
               >
                 <LayoutDashboard size={15} />
                 My Dashboard
               </a>
               <a
-                href={`https://public-registration.skillmissionassam.org/profile/${jwtToken ? `?token=${jwtToken}` : ""
-                  }`}
+                href={`https://public-registration.skillmissionassam.org/profile/${
+                  jwtToken ? `?token=${jwtToken}` : ""
+                }`}
                 className="text-base font-medium text-gray-700"
               >
                 <i className="bi bi-person" />
@@ -476,6 +530,6 @@ function MobileNav({
           )}
         </nav>
       </SheetContent>
-    </Sheet >
+    </Sheet>
   );
 }

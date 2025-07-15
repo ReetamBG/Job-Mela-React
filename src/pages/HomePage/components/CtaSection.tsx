@@ -6,13 +6,13 @@ const CtaSection = () => {
           style={{ clipPath: "polygon(100% 0%, 0% 100%, 100% 100%)" }}
         ></div>
         <div className="bg-emerald-400 z-10 -mt-[.5px] py-12 xl:py-24">
-          <div className="max-w-7xl mx-auto px-4 flex relative">
+          <div className="max-w-7xl mx-auto px-4 flex relative 1my-20 sm:mt-0">
             <img
               src="/images/search-asset2.png"
               alt=""
               className="h-[32rem] object-contain absolute left-0 z-10 top-1/2 -translate-y-1/2"
             />
-            <div className="max-w-3xl ml-auto pl-24 z-10">
+            <div className="max-w-3xl ml-auto pl-24 z-10 hidden md:block">
               <h2 className="text-xl lg:text-3xl mb-4 font-bold">
                 Ready to Kickstart Your Career? Discover jobs across popular sectors
               </h2>

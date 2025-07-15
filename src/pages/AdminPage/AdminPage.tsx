@@ -7,6 +7,7 @@ import {
   Building,
   ChevronDown,
   LogOut,
+  LogOutIcon,
   LucideMenu,
   Settings,
   User,
@@ -14,7 +15,13 @@ import {
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { clearUser, selectCurrentUser } from "@/store/slices/authSlice";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import Cookies from "js-cookie";
+import { Button } from "@/components/ui/button";
 
 const AdminPage = () => {
   const dispatch = useAppDispatch();
@@ -25,48 +32,48 @@ const AdminPage = () => {
   };
 
   const sideBarTabs = [
-  {
-    value: "candidates",
-    label: "Candidates",
-    icon: <User />,
-  },
-  {
-    value: "jobs",
-    label: "Jobs",
-    icon: <BriefcaseBusiness />,
-  },
-  {
-    value: "companies",
-    label: "Companies",
-    icon: <Building />,
-  },
-  {
-    value: "settings",
-    label: "Settings",
-    icon: <Settings />,
-    isDropdown: true,
-    children: [
-      {
-        label: "Profile Settings",
-        value: "profile-settings",
-        icon: <User />,
-      },
-      {
-        label: "Account",
-        value: "account",
-        icon: <Settings />,
-      },
-    ],
-  },
-  {
-    value: "logout",
-    label: "Logout",
-    icon: <LogOut />,
-    onClick: () => {
-      handleLogout();
+    {
+      value: "candidates",
+      label: "Candidates",
+      icon: <User />,
     },
-  },
-];
+    {
+      value: "jobs",
+      label: "Jobs",
+      icon: <BriefcaseBusiness />,
+    },
+    {
+      value: "companies",
+      label: "Companies",
+      icon: <Building />,
+    },
+    {
+      value: "settings",
+      label: "Settings",
+      icon: <Settings />,
+      isDropdown: true,
+      children: [
+        {
+          label: "Profile Settings",
+          value: "profile-settings",
+          icon: <User />,
+        },
+        {
+          label: "Account",
+          value: "account",
+          icon: <Settings />,
+        },
+      ],
+    },
+    {
+      value: "logout",
+      label: "Logout",
+      icon: <LogOut />,
+      onClick: () => {
+        handleLogout();
+      },
+    },
+  ];
 
   const [selectedTab, setSelectedTab] = useState("candidates");
   const [expandSidebar, setExpandSidebar] = useState(true);
@@ -82,7 +89,9 @@ const AdminPage = () => {
         <div className="flex  flex-col md:flex-row h-full">
           <TabsList
             className={`md:flex flex-col justify-start p-0 ps-5 min-h-screen bg-emerald-600 items-start rounded-none transition-all duration-300 ease-in-out overflow-hidden ${
-              expandSidebar ? "md:min-w-[300px] md:w-[300px]" : "md:min-w-[80px] md:w-[80px]"
+              expandSidebar
+                ? "md:min-w-[300px] md:w-[300px]"
+                : "md:min-w-[80px] md:w-[80px]"
             }`}
           >
             <div
@@ -121,7 +130,7 @@ const AdminPage = () => {
                     }
                   }}
                   value={tab.value}
-                  className="justify-center max-h-16 rounded-l-full md:justify-start flex items-center gap-3 w-full py-2 md:py-5 text-base sm:text-lg font-medium"
+                  className="justify-center cursor-pointer max-h-16 rounded-l-full md:justify-start flex items-center gap-3 w-full py-2 md:py-5 text-base sm:text-lg font-medium"
                 >
                   <div
                     className={`rounded-full p-1 md:p-3 ${
@@ -181,7 +190,7 @@ const AdminPage = () => {
 
           <div className="w-full bg-white">
             {/* Navbar  */}
-            <AdminNavbar setExpandSidebar={setExpandSidebar} />
+            <AdminNavbar setExpandSidebar={setExpandSidebar} handleLogout={handleLogout}/>
 
             <div className="px-10">
               <hr className="mb-2" />
@@ -204,8 +213,13 @@ const AdminPage = () => {
 
 export default AdminPage;
 
-
-const AdminNavbar = ({ setExpandSidebar }: {setExpandSidebar: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const AdminNavbar = ({
+  setExpandSidebar,
+  handleLogout,
+}: {
+  setExpandSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  handleLogout: () => void;
+}) => {
   const user = useAppSelector(selectCurrentUser);
   return (
     <div className="flex items-center justify-between p-4 bg-white text-black/50 shadow-md px-10">
@@ -213,9 +227,26 @@ const AdminNavbar = ({ setExpandSidebar }: {setExpandSidebar: React.Dispatch<Rea
         className="cursor-pointer border-2 border-black/50 rounded-md"
         onClick={() => setExpandSidebar((prev) => !prev)}
       />
-      <span className="cursor-pointer size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center">
-        {user && user.type === "Mela Admin" && user.login_name.slice(0, 1).toUpperCase()}
-      </span>
+
+      <Popover>
+        <PopoverTrigger>
+          <span className="cursor-pointer size-10 text-3xl text-emerald-900 font-medium rounded-full bg-emerald-200 ring-2 ring-white grid place-content-center">
+            {user &&
+              user.type === "Mela Admin" &&
+              user.login_name.slice(0, 1).toUpperCase()}
+          </span>
+        </PopoverTrigger>
+        <PopoverContent className="relative right-8 top-2 w-40 py-2">
+          <Button
+            onClick={handleLogout}
+            className="w-full text-lg font-semibold"
+            variant="ghost"
+          >
+            <LogOutIcon />
+            Logout
+          </Button>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

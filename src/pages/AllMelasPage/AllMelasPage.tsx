@@ -31,7 +31,7 @@ const AllMelasPage = () => {
   if (isLoading) return <Loading item="Melas" />;
 
   return (
-    <section className="px-12 py-12 flex-grow flex">
+    <section className=" py-12 flex-grow flex">
       <div className="max-w-8xl w-full mx-auto px-4 flex flex-col md:flex-row gap-6">
         {/* Filter Form */}
         <div className="flex flex-col gap-2 mb-12 w-full md:w-1/5 flex-shrink-0">
