@@ -9,6 +9,15 @@ export function formatDate(dateStr: string): string {
   });
 }
 
+export function formatTime(timeStr: string): string {
+  const [hours, minutes] = timeStr.split(":").map(Number);
+
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 || 12;
+
+  return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+}
+
 export function getDaysRemaining(endDateStr: string): number | null {
   const now = new Date();
   const endDate = new Date(endDateStr);

@@ -2,87 +2,71 @@ const HowItWorks = () => {
   // How it works
   return (
     <section className="relative py-12 xl:py-24 bg-emerald-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <p className="text-3xl lg:text-5xl text-center mb-4">How Job Mela Works?</p>
-          <p className="mt-2 text-gray-700 mb-12 text-center max-w-lg mx-auto text-sm lg:text-base">
-            Whether you&apos;re just starting out or seeking your next opportunity, our streamlined process ensures a smooth experience from registration to interview.
-          </p>
+      <div className="max-w-7xl mx-auto px-4">
+        <p className="text-3xl md:text-4xl font-bold mb-2 text-center">How Job Mela Works?</p>
+        <p className="mt-2 text-gray-700 mb-12 text-center max-w-2xl mx-auto text-sm lg:text-base">Whether you're just starting out or seeking your next opportunity, our streamlined process ensures a smooth experience from registration to interview.</p>
 
-          <div className="relative mt-24">
-            {/* Vertical timeline line */}
-            <div className="hidden sm:block absolute left-1/2 transform -translate-x-1/2 h-0.5 w-full border-t-2 border-dashed border-gray-700 -z-0"></div>
+        <div className="relative mt-24">
+          <div className="hidden lg:block relative overflow-hidden w-full h-6 top-0">
+            <div className="absolute h-0.5 w-full border-t-2 border-dashed border-gray-700 -z-0 timeline-line top-3 timeline-animate-left"><div className="arrow-head"></div></div>
+          </div>
 
-            <div className="flex flex-col sm:flex-row">
-              {/* STEP 1 */}
-              <div className="relative w-full sm:w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
-                {/* Text */}
-                <div className="w-full text-center md:text-left px-6">
-                  <h3 className="text-xl font-medium mb-6">Register or Apply with Existing Details</h3>
-                  <p className="text-gray-700 text-sm">
-                    Begin by creating a new profile or applying with your existing credentials. Your identity will be verified to ensure eligibility and streamline further steps in the hiring process.
-                  </p>
-                </div>
-                <div className="hidden sm:block absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
-                  STEP 1
-                </div>
-                <div className="w-full">
-                  <img
-                    src="https://img.freepik.com/free-vector/sign-up-concept-illustration_114360-27096.jpg?ga=GA1.1.2029762281.1750667458&semt=ais_items_boosted&w=740"
-                    alt="Registration Process"
-                    className="w-full object-contain px-6 h-72 pb-6"
-                  />
-                </div>
+          <div className="flex flex-col lg:flex-row items-end lg:items-start">
+            <div className="relative w-10/12 lg:w-[32%] flex flex-col-reverse h-full gap-6 pt-12">
+              <div className="w-full text-center px-6">
+                <h3 className="text- tracking-wide font-semibold mb-6">Register or Apply Fast</h3>
+                <p className="text-gray-600 text-sm">
+                  Start with a new profile or use your existing one. Quick ID check, and you're ready to go!
+                </p>
               </div>
-              {/* STEP 2 */}
-              <div className="relative w-full sm:w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
-                {/* Text */}
-                <div className="w-full lg:pl-10 text-center md:text-left px-6">
-                  <h3 className="text-xl font-medium mb-6">Get Personalized Recommendations</h3>
-                  <p className="text-gray-700 text-sm">
-                    Based on your qualifications and preferences, the system will recommend potential employers or candidates. These suggestions align with your profile, increasing your chances of a successful match.
-                  </p>
-                </div>
-                <div className="hidden sm:block absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
-                  STEP 2
-                </div>
-                <div className="w-full">
-                  <img
-                    src="https://img.freepik.com/free-vector/organic-flat-feedback-concept_23-2148959061.jpg?ga=GA1.1.2029762281.1750667458&semt=ais_items_boosted&w=740"
-                    alt="Recommendations"
-                    className="w-full object-contain px-6 h-72 pb-4"
-                  />
-                </div>
+              <div className="lg:absolute mx-auto -left-4 lg:left-0 transform -translate-x-1/2 tracking-widest bg-yellow-600 text-gray-100 size-8 text-xs font-bold flex items-center justify-center rounded-full z-10 top-4 lg:-top-7">
+                1
               </div>
-              {/* STEP 3 */}
-              <div className="relative w-full sm:w-[32%] flex flex-col-reverse h-full gap-10 pt-24">
-                {/* Text */}
-                <div className="w-full text-center md:text-left px-6">
-                  <h3 className="text-xl font-medium mb-6">Schedule Interviews with Ease</h3>
-                  <p className="text-gray-700 text-sm">
-                    Once you’ve found the right match, set up your interview—either in person or online—at a time that suits both parties. Seamless coordination ensures a smooth step toward your next career move.
-                  </p>
-                </div>
-                <div className="hidden sm:block absolute left-0 transform -translate-x-1/2 tracking-widest bg-gray-200 text-gray-700 text-xs font-bold py-4 px-8 rounded-full z-10 -top-6">
-                  STEP 3
-                </div>
-                <div className="w-full">
-                  <img
-                    src="https://img.freepik.com/free-vector/choice-worker-concept_52683-43492.jpg?ga=GA1.1.2029762281.1750667458&semt=ais_items_boosted&w=740"
-                    alt="Schedule Interview"
-                    className="w-full object-contain px-6 h-72"
-                  />
-                </div>
+              <div className="w-full">
+                <img src="/images/step1.png"
+                  alt="Registration Process" className="w-full object-contain px-6 h-44 object-center pb-6" />
               </div>
-              {/* Completion */}
-              <div className="relative w-[4%] z-10 flex flex-col items-center gap-10">
-                <div className="bg-emerald-400 text-xs font-bold rounded-full size-12 flex items-center justify-center absolute -right-1 -top-6">
-                  <i className="bi bi-check text-xl"></i>
-                </div>
+            </div>
+            <div className="relative w-10/12 lg:w-[32%] flex flex-col-reverse h-full gap-6 pt-12">
+              <div className="w-full lg:pl-10 text-center px-6">
+                <h3 className="text- tracking-wide font-semibold mb-6">Get Smart Matches</h3>
+                <p className="text-gray-600 text-sm">
+                  Based on your skills and interests, we suggest the best jobs or candidates—just for you.
+                </p>
+              </div>
+              <div className="lg:absolute mx-auto -left-4 lg:left-0 transform -translate-x-1/2 tracking-widest bg-yellow-600 text-gray-100 size-8 text-xs font-bold flex items-center justify-center rounded-full z-10 top-4 lg:-top-7">
+                2
+              </div>
+              <div className="w-full">
+                <img src="/images/step2.png"
+                  alt="Recommendations" className="w-full object-contain px-6 h-44 object-center pb-4" />
+              </div>
+            </div>
+            <div className="relative w-10/12 lg:w-[32%] flex flex-col-reverse h-full gap-6 pt-12">
+              <div className="w-full text-center px-6">
+                <h3 className="text- tracking-wide font-semibold mb-6">Get Interview Schedule Instantly</h3>
+                <p className="text-gray-600 text-sm">
+                  Once matched, you’ll get your interview time—no hassles, no back-and-forth.
+                </p>
+              </div>
+              <div className="lg:absolute mx-auto -left-4 lg:left-0 transform -translate-x-1/2 tracking-widest bg-yellow-600 text-gray-100 size-8 text-xs font-bold flex items-center justify-center rounded-full z-10 top-4 lg:-top-7">
+                3
+              </div>
+              <div className="w-full">
+                <img src="/images/step3.png"
+                  alt="Schedule Interview" className="w-full object-contain px-6 h-44 object-center" />
+              </div>
+            </div>
+
+            <div className="relative w-10/12 lg:w-[4%] z-10 flex flex-col items-center gap-10 pt-12 lg:pt-0">
+              <div className="bg-emerald-400 text-xs font-bold rounded-full size-8 flex items-center justify-center lg:absolute mx-auto lg:-right-1 top-4 lg:-top-7">
+                <i className="bi bi-check text-xl"></i>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
   )
 }
 

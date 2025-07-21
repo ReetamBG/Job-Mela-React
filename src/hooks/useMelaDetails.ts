@@ -18,7 +18,7 @@ const useMelaDetails = ({
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if(!isUserResolved) return    // prevent running if user state is not resolved
+    if (!isUserResolved) return; // prevent running if user state is not resolved
 
     const url = import.meta.env.VITE_BASE_URL + "/v1/mela";
 
@@ -36,6 +36,8 @@ const useMelaDetails = ({
         const data = await res.json();
         setMelaInfo(data.data.mela[0]);
         setJobPostings(data.data.company);
+        console.log("Mela Info:", data.data.mela[0]);
+        console.log("Job Postings:", data.data.company);
       } catch (error) {
         toast.error("Error fetching mela details");
         console.log(error);

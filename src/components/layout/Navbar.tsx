@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import {
   useSearchParams,
   Link,
-  useNavigate,
-  useLocation,
+  // useNavigate,
+  // useLocation,
 } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/store/slices/authSlice";
 import { decodeJwt } from "@/lib/jwt";
 import type { User } from "@/types";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,16 +24,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  // Activity,
-  ArrowDown,
-  ArrowLeftCircle,
+  Activity,
+  // ArrowLeftCircle,
   LayoutDashboard,
   LogOut,
   MapPin,
   Menu,
-  // Settings,
-  Shuffle,
+  Settings,
   User as UserIcon,
+  HeartHandshake,
+  GraduationCap,
+  Briefcase,
+  CalendarCheck,
+  Headphones,
+  // MoreVertical,
+  // ChevronDown,
+  MoveHorizontal,
+  LogIn,
+  TextCursorInput,
+  Home,
 } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -47,30 +56,33 @@ const Navbar = () => {
 
   const [showMore, setShowMore] = useState<boolean>(false);
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
   useEffect(() => {
     let decodedUser: User | null = null;
-    let token: string | null = Cookies.get("token") ?? null;
+    // let token: string | null = Cookies.get("token") ?? null;
+    let token: string | null = sessionStorage.getItem("token");
     // console.log("Token from Cookies:", token);
 
     try {
       if (token) {
-      decodedUser = decodeJwt<User>(token);
-    } else {
-      token = searchParams.get("token");
-      // console.log("Token from URL:", token);
-      if (token) {
         decodedUser = decodeJwt<User>(token);
-        console.log("Decoded User:", decodedUser);
-        Cookies.set("token", token, { expires: 7 });
+      } else {
+        token = searchParams.get("token");
+        // console.log("Token from URL:", token);
+        if (token) {
+          decodedUser = decodeJwt<User>(token);
+          console.log("Decoded User:", decodedUser);
+          // Cookies.set("token", token, { expires: 7 });
+          sessionStorage.setItem("token", token);
+        }
       }
-    }
     } catch {
-      toast.error("Invalid token. Please log in again.",);
+      toast.error("Invalid token. Please log in again.");
     }
-    
+
+    // console.log("Decoded User:", decodedUser);
 
     // needed to redirect to links with the token
     if (token) setJwtToken(token);
@@ -84,7 +96,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(clearUser());
-    Cookies.remove("token");
+    // Cookies.remove("token");
+    sessionStorage.removeItem("token");
     window.location.href = "/";
   };
 
@@ -162,7 +175,7 @@ const Navbar = () => {
               href="https://convergence_v1.skillmissionassam.org/"
               className="flex gap-4 items-start"
             >
-              <Shuffle className="mt-1" />
+              <MoveHorizontal className="mt-1" />
               <div>
                 <p className="text-lg font-semibold">Convergence</p>
                 <p className="text-sm">Integrated schemes & partnerships</p>
@@ -190,11 +203,11 @@ const Navbar = () => {
       </div>
 
       {/* Back button */}
-      {location.pathname !== "/" && (
+      {/* {location.pathname !== "/" && (
           <button onClick={() => navigate(-1)} className="hidden sm:block relative left-4 top-4 cursor-pointer text-foreground/50">
             <ArrowLeftCircle size={30} />
           </button>
-      )}
+      )} */}
     </section>
   );
 };
@@ -252,16 +265,16 @@ function DesktopUserSection({
                     jwtToken ? `?token=${jwtToken}` : ""
                   }`,
                 },
-                // {
-                //   name: "My Activities",
-                //   icon: <Activity size={15} />,
-                //   link: "#",
-                // },
-                // {
-                //   name: "Settings",
-                //   icon: <Settings size={15} />,
-                //   link: "#",
-                // },
+                {
+                  name: "My Activities",
+                  icon: <Activity size={15} />,
+                  link: "#",
+                },
+                {
+                  name: "Settings",
+                  icon: <Settings size={15} />,
+                  link: "#",
+                },
               ].map((item) => (
                 <DropdownMenuItem
                   key={item.name}
@@ -290,14 +303,14 @@ function DesktopUserSection({
             href="https://public-registration.skillmissionassam.org/register?redirect=https://job-mela.skillmissionassam.org/"
             className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:underline py-4 xl:bg-emerald-400 xl:hover:bg-emerald-400/80 xl:rounded-full xl:border-gray-300 px-8 xl:px-4 xl:py-2.5 xl:no-underline xl:hover:no-underline"
           >
-            <i className="bi bi-input-cursor" />
+            <TextCursorInput size={15} />
             <span>Register</span>
           </a>
           <a
             href="https://public-registration.skillmissionassam.org/login?redirect=https://job-mela.skillmissionassam.org/"
             className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:underline py-4 xl:bg-black xl:hover:bg-black/80 xl:text-white xl:rounded-full xl:border-gray-300 px-8 xl:px-4 xl:py-2.5 xl:no-underline xl:hover:no-underline"
           >
-            <i className="bi bi-box-arrow-in-right" />
+            <LogIn size={15} />
             <span>Login</span>
           </a>
         </div>
@@ -308,7 +321,7 @@ function DesktopUserSection({
 
 function DesktopNavLinks({
   jwtToken,
-  setShowMore,
+  // setShowMore,
 }: {
   jwtToken: string;
   setShowMore: React.Dispatch<React.SetStateAction<boolean>>;
@@ -316,39 +329,39 @@ function DesktopNavLinks({
   const links = [
     {
       name: "Schemes / Programs",
-      icon: "bi bi-bullseye",
+      icon: <Home size={15} />,
       url: `https://skillcourse.skillmissionassam.org/${
         jwtToken ? `?token=${jwtToken}` : ""
       }`,
     },
     {
       name: "Recommendations",
-      icon: "bi bi-chat-left-heart",
+      icon: <HeartHandshake size={15} />,
       url: "#",
     },
     {
       name: "Skill Courses",
-      icon: "bi bi-mortarboard",
+      icon: <GraduationCap size={15} />,
       url: `https://skillcourse.skillmissionassam.org/${
         jwtToken ? `?token=${jwtToken}` : ""
       }`,
     },
     {
       name: "Job Search",
-      icon: "bi bi-briefcase",
+      icon: <Briefcase size={15} />,
       url: `https://jobboard.skillmissionassam.org/${
         jwtToken ? `?token=${jwtToken}` : ""
       }`,
     },
     {
       name: "Job Melas",
-      icon: "bi bi-calendar-event",
+      icon: <CalendarCheck size={15} />,
       url: "/",
       type: "internalLink",
     },
     {
       name: "Support",
-      icon: "bi bi-headset",
+      icon: <Headphones size={15} />,
       url: "#",
     },
   ];
@@ -363,7 +376,7 @@ function DesktopNavLinks({
               to={link.url}
               className="text-sm text-gray-700 flex items-center gap-2 hover:underline"
             >
-              <i className={link.icon} />
+              {link.icon}
               <span>{link.name}</span>
             </Link>
           ) : (
@@ -372,19 +385,19 @@ function DesktopNavLinks({
               href={link.url}
               className="text-sm text-gray-700 flex items-center gap-2 hover:underline"
             >
-              <i className={link.icon} />
+              {link.icon}
               <span>{link.name}</span>
             </a>
-          )
+          ),
         )}
-        <button
+        {/* <button
           onClick={() => setShowMore((prev) => !prev)}
           className="text-sm text-gray-700 flex items-center gap-2 hover:underline cursor-pointer"
         >
-          <Menu size={15} />
+          <MoreVertical size={15} />
           <span>More</span>
-          <ArrowDown size={15} />
-        </button>
+          <ChevronDown size={15} />
+        </button> */}
       </nav>
     </div>
   );
@@ -399,42 +412,43 @@ function MobileNav({
   jwtToken: string;
   handleLogout: () => void;
 }) {
-  const [showMore, setShowMore] = useState<boolean>(false);
+  // const [showMore, setShowMore] = useState<boolean>(false);
+  const [showMore] = useState<boolean>(false);
   const links = [
     {
       name: "Schemes / Programs",
-      icon: "bi bi-bullseye",
+      icon: <Home size={20} />,
       url: `https://skillcourse.skillmissionassam.org/${
         jwtToken ? `?token=${jwtToken}` : ""
       }`,
     },
     {
       name: "Recommendations",
-      icon: "bi bi-chat-left-heart",
+      icon: <HeartHandshake size={20} />,
       url: "#",
     },
     {
       name: "Skill Courses",
-      icon: "bi bi-mortarboard",
+      icon: <GraduationCap size={20} />,
       url: `https://skillcourse.skillmissionassam.org/${
         jwtToken ? `?token=${jwtToken}` : ""
       }`,
     },
     {
       name: "Job Search",
-      icon: "bi bi-briefcase",
+      icon: <Briefcase size={20} />,
       url: `https://jobboard.skillmissionassam.org/${
         jwtToken ? `?token=${jwtToken}` : ""
       }`,
     },
     {
       name: "Job Melas",
-      icon: "bi bi-calendar-event",
+      icon: <CalendarCheck size={20} />,
       url: "#",
     },
     {
       name: "Support",
-      icon: "bi bi-headset",
+      icon: <Headphones size={20} />,
       url: "#",
     },
   ];
@@ -446,7 +460,7 @@ function MobileNav({
           type="button"
           className="font-medium rounded-full border-gray-300 size-6 flex items-center justify-center lg:hidden"
         >
-          <i className="bi bi-list text-lg"></i>
+          <Menu size={18} />
         </button>
       </SheetTrigger>
       <SheetContent side="right" className="w-64 sm:w-100 p-4">
@@ -457,18 +471,18 @@ function MobileNav({
               href={link.url}
               className="text-base font-medium text-gray-700 flex items-center gap-2"
             >
-              <i className={link.icon} />
+              {link.icon}
               <span>{link.name}</span>
             </a>
           ))}
 
           {/* More section */}
-          <button
+          {/* <button
             className="text-base flex items-center font-medium text-gray-700  gap-2 cursor-pointer"
             onClick={() => setShowMore((prev) => !prev)}
           >
-            <Menu size={20} /> More
-          </button>
+            <MoreVertical size={20} /> More
+          </button> */}
           <div
             className={`flex flex-col gap-8 text-gray-700 text-base font-medium relative left-5 ${
               showMore ? "block" : "hidden"
@@ -479,7 +493,7 @@ function MobileNav({
               <p className="">Skill Centers</p>
             </a>
             <a href="#" className="flex gap-4 items-center">
-              <Shuffle size={20} />
+              <MoveHorizontal size={20} />
               <p className="text-base font-medium">Convergence</p>
             </a>
           </div>
@@ -500,31 +514,31 @@ function MobileNav({
                 href={`https://public-registration.skillmissionassam.org/profile/${
                   jwtToken ? `?token=${jwtToken}` : ""
                 }`}
-                className="text-base font-medium text-gray-700"
+                className="text-base font-medium text-gray-700 flex items-center gap-2"
               >
-                <i className="bi bi-person" />
+                <UserIcon size={15} />
                 My Profile
               </a>
               <Button
                 onClick={handleLogout}
-                className="text-base font-medium text-white"
+                className="text-base font-medium text-white flex items-center gap-2"
               >
-                <i className="bi bi-box-arrow-in-right" /> Logout
+                <LogOut size={15} /> Logout
               </Button>
             </>
           ) : (
             <>
               <a
                 href="https://public-registration.skillmissionassam.org/register?redirect=https://job-mela.skillmissionassam.org/"
-                className="text-base font-medium text-gray-700"
+                className="text-base font-medium text-gray-700 flex items-center gap-2"
               >
-                <i className="bi bi-input-cursor" /> Register
+                <TextCursorInput size={15} /> Register
               </a>
               <a
                 href="https://public-registration.skillmissionassam.org/login?redirect=https://job-mela.skillmissionassam.org/"
-                className="text-base font-medium text-gray-700"
+                className="text-base font-medium text-gray-700 flex items-center gap-2"
               >
-                <i className="bi bi-box-arrow-in-right" /> Login
+                <LogIn size={15} /> Login
               </a>
             </>
           )}

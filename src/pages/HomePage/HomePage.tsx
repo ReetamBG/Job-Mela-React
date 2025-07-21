@@ -5,8 +5,8 @@ const HomePage = () => {
     <>
       <Hero />
       <Melas />
-      <HowItWorks />
       <CtaSection />
+      <HowItWorks />
       <Companies />
     </>
   );

@@ -28,13 +28,13 @@ const useCompanies = (filters?: GetCompaniesParams) => {
         });
         if (!res.ok) throw new Error("Could not fetch companies");
         const data = await res.json();
+        console.log("companies from useCompanies", data.data);
         setCompanies(data.data);
       } catch (error) {
         toast.error("No companies found");
         console.log(error);
         setCompanies([]);
-      }
-      finally{
+      } finally {
         setIsLoading(false);
       }
     })();

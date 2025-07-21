@@ -1,6 +1,7 @@
 import Loading from "@/components/customComponents/Loading";
-import { formatDate, getDaysRemaining } from "@/lib/dateTime";
+import { formatDate, formatTime, getDaysRemaining } from "@/lib/dateTime";
 import type { Mela } from "@/types";
+import { Calendar, Clock, LocateFixedIcon, UserIcon } from "lucide-react";
 
 interface MelaInfoProps {
   melaInfo: Mela | null;
@@ -22,45 +23,59 @@ const MelaInfo = ({ melaInfo, isLoading }: MelaInfoProps) => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-card border border-emerald-400 shadow-emerald-600 px-6 py-8">
-      {/* Title */}
-      <div className="mb-6">
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-          {melaInfo.vsVenueName}
-        </h1>
-        <p className="text-sm text-gray-600">{melaInfo.vsDistrict}</p>
-      </div>
+    <div className="">
+      <div className="flex justify-center bg-emerald-600 text-white w-full py-24 px-4">
+        <div className="max-w-6xl ">
+          {/* Title */}
+          <div className="mb-6">
+            <h1 className="text-2xl lg:text-4xl font-bold">
+              {melaInfo.vsVenueName} - {melaInfo.vsDistrict}
+            </h1>
+          </div>
 
-      {/* Description */}
-      <p className="text-gray-700 text-sm lg:text-base mb-6">
-        {melaInfo.vsDescription ?? "No description provided for this mela."}
-      </p>
+          {/* Description */}
+          <p className="text-white/90 text-sm lg:text-base mb-6">
+            {melaInfo.vsDescription ?? "No description provided for this mela."}
+          </p>
 
-      {/* Time & Venue */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <h3 className="font-semibold text-sm text-gray-900 mb-2">Dates</h3>
-          <p className="flex items-center gap-2 text-gray-700 text-sm">
-            <i className="bi bi-calendar-event-fill text-gray-900 text-xs"></i>
-            {formatDate(melaInfo.dtStartDate)} –{" "}
-            {formatDate(melaInfo.dtEndDate)}
-          </p>
-          <p className="text-xs text-gray-500 mt-1">
-            Ends in {getDaysRemaining(melaInfo.dtEndDate)} days
-          </p>
+          {/* Dates */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 mb-6">
+            <div className="flex gap-2">
+              <Calendar />
+              <div>
+                <p className="flex items-center gap-2">
+                  {formatDate(melaInfo.dtStartDate)}, -
+                  {formatDate(melaInfo.dtEndDate)},{" "}
+                </p>
+                <p className="text-xs  mt-1">
+                  Ends in {getDaysRemaining(melaInfo.dtEndDate)} days
+                </p>
+              </div>
+            </div>
+
+            {/* Time  */}
+            <div>
+              <p className="flex items-center gap-2">
+                <Clock />
+                {formatTime(melaInfo.dtSlotStartTime)} -{" "}
+                {formatTime(melaInfo.dtSlotEndTime)}
+              </p>
+            </div>
+            <div>
+              <p className="flex items-center gap-2">
+                <LocateFixedIcon />
+                {melaInfo.vsAddress}, {melaInfo.vsDistrict}
+              </p>
+            </div>
+            <div>
+              <p className="flex items-center gap-2">
+                <UserIcon />
+                {melaInfo.totalParticipent} Enrolled
+              </p>
+            </div>
+          </div>
         </div>
-
-        <div>
-          <h3 className="font-semibold text-sm text-gray-900 mb-2">Location</h3>
-          <p className="flex items-center gap-2 text-gray-700 text-sm">
-            <i className="bi bi-geo-fill text-gray-900 text-xs"></i>
-            {melaInfo.vsAddress}, {melaInfo.vsDistrict}
-          </p>
-        </div>
       </div>
-
-      {/* Apply CTA */}
-      <div className="mt-8 border-t border-dashed pt-4 flex justify-end gap-4"></div>
     </div>
   );
 };

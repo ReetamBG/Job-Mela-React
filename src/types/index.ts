@@ -10,6 +10,8 @@ export interface Mela {
   dtEndDate: string;
   dtSlotStartTime: string;
   dtSlotEndTime: string;
+  totalParticipent: number;
+  companyCount: number;
 }
 
 export interface District {
@@ -25,7 +27,7 @@ export interface Qualification {
 
 // User data related Types
 export interface CandidateData {
-  pklCandidateId: number;
+  id: number;
   firstName: string;
   middleName: string | null;
   lastName: string;
@@ -84,24 +86,26 @@ export type User = CandidateUser | EmployerUser | MelaAdmin;
 
 // Company related Types
 export interface Company {
-  company_name: string;
+  companyName: string;
+  melaCount: number;
+  empTypeName: string;
   comDesc: string;
   district: string;
   fklEmployerId: number;
   fklmela_no: number;
-  venue_name: string;
+  vsVenueName: string;
   vsQualification: string;
-  phone_no: string;
-  vsSelectionProcedure: "online" | "offline";
+  companyMobile: string;
+  selectionProcedure: "online" | "offline";
 }
 
 export interface JobPosting {
-  address: string;
+  companyAddress: string;
   comDesc: string;
   company_name: string;
   district: string;
   email: string;
-  end_date: string;
+  dtEndDate: string;
   fklEmployerId: number;
   fklmela_no: number;
   isVarified: number;
@@ -112,7 +116,9 @@ export interface JobPosting {
   registration_no: string;
   remarks: string | null;
   sl_no: number;
-  start_date: string;
+  dtStartDate: string;
+  participation_dates: string;
+  total_applicants: string;
   vacancy: number;
   venue_name: string;
   vsQualification: string;

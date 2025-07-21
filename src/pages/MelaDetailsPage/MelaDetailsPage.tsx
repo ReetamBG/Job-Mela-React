@@ -9,12 +9,12 @@ import { useParams } from "react-router-dom";
 const MelaDetailsPage = () => {
   const { melaId } = useParams<{ melaId: string }>();
   const user = useAppSelector(selectCurrentUser);
-  
+
   let userId;
   if (user?.type === "Mela Admin") {
     userId = null;
   } else if (user?.type === "candidate") {
-    userId = user?.data?.pklCandidateId ?? null;
+    userId = user?.data?.id ?? null;
   } else {
     userId = user?.data[0]?.pklEntityId ?? null;
   }
@@ -25,7 +25,7 @@ const MelaDetailsPage = () => {
   });
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4">
+    <div className="mx-auto">
       <MelaInfo melaInfo={melaInfo} isLoading={isLoading} />
       {!user || user.type === "candidate" ? (
         <JobPostingsCandidate

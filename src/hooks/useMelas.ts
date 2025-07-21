@@ -29,18 +29,18 @@ const useMelas = (filters?: MelaFilters) => {
         if (!res.ok) throw new Error("Error fetching melas");
         const data = await res.json();
         let melasData = data.data;
-        
+
         // Apply client-side sorting if specified
         if (filters?.sortByStartDate) {
           melasData = melasData.sort((a: Mela, b: Mela) => {
             const dateA = new Date(a.dtStartDate);
             const dateB = new Date(b.dtStartDate);
-            
+
             // Handle invalid dates
             if (isNaN(dateA.getTime()) && isNaN(dateB.getTime())) return 0;
             if (isNaN(dateA.getTime())) return 1;
             if (isNaN(dateB.getTime())) return -1;
-            
+
             if (filters.sortByStartDate === "asc") {
               return dateA.getTime() - dateB.getTime();
             } else {
@@ -48,20 +48,20 @@ const useMelas = (filters?: MelaFilters) => {
             }
           });
         }
-        
+
+        console.log("melas from useMelas: ", melasData);
         setMelas(melasData);
       } catch (error) {
         toast.error("Could not fetch melas");
         console.log(error);
         setMelas([]);
-      }
-      finally {
+      } finally {
         setIsLoading(false);
       }
     })();
   }, [filters]);
 
-  return { melas, isLoading};
+  return { melas, isLoading };
 };
 
 export default useMelas;

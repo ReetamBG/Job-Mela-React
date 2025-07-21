@@ -1,43 +1,32 @@
 const CtaSection = () => {
   return (
-    <section className="relative bg-emerald-50">
-        <div
-          className="bg-emerald-400 w-full h-20 mt-1"
-          style={{ clipPath: "polygon(100% 0%, 0% 100%, 100% 100%)" }}
-        ></div>
-        <div className="bg-emerald-400 z-10 -mt-[.5px] py-12 xl:py-24">
-          <div className="max-w-7xl mx-auto px-4 flex relative 1my-20 sm:mt-0">
-            <img
-              src="/images/search-asset2.png"
-              alt=""
-              className="h-[32rem] object-contain absolute left-0 z-10 top-1/2 -translate-y-1/2"
-            />
-            <div className="max-w-3xl ml-auto pl-24 z-10 hidden md:block">
-              <h2 className="text-xl lg:text-3xl mb-4 font-bold">
-                Ready to Kickstart Your Career? Discover jobs across popular sectors
-              </h2>
-              <p className="mt-2 mb-12 max-w-lg text-sm lg:text-base">
-                Join thousands of job seekers who’ve already found their dream roles. It’s quick, easy, and free to get started.
-              </p>
-            </div>
-            {/* 
-            <a
-              href="/register.php"
-              className="text-sm font-medium inline-flex items-center gap-2 text-gray-700 py-4 px-8 bg-white hover:bg-emerald-50 rounded-full border-transparent mt-12 hover:shadow-lg hover:shadow-shadow transition-all duration-300"
-            >
-              <span>Register Now</span>
-              <i className="bi bi-arrow-right"></i>
-            </a>
-            */}
+    <section className="relative">
+      <div
+        className="bg-emerald-400 w-full h-20 mt-1"
+        style={{ clipPath: "polygon(100% 0%, 0% 100%, 100% 100%)" }}
+      >
+      </div>
+
+      <div className="bg-emerald-400 py-12 xl:py-24 relative z-10 -mt-[.5px]">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center relative">
+
+          <div className="order-1 lg:order-none w-full lg:w-auto mb-8 lg:mb-0">
+            <img src="/images/search-asset2.png" alt="cta image"
+              className="h-72 sm:h-96 lg:h-[32rem] object-contain mx-auto lg:mx-0 lg:absolute lg:left-0 lg:top-1/2 lg:-translate-y-1/2 z-10" />
           </div>
+
+          <div className="order-2 w-full lg:max-w-3xl lg:ml-auto lg:pl-24 text-center lg:text-left">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">Your Dream Job Is Just a Click Away!</h2>
+            <p className="mt-2 mb-8 lg:mb-12 max-w-lg text-sm lg:text-base mx-auto lg:mx-0">Discover roles that fit your passion.</p>
+            <a href="https://public-registration.skillmissionassam.org/register?redirect=https://job-mela.skillmissionassam.org/"
+              className="text-xs font-medium inline-flex items-center gap-2 py-4 px-8 bg-black text-white hover:bg-black/80 rounded-full hover:shadow-lg transition-all duration-300">
+              <span>Start Your Journey</span><i className="bi bi-arrow-right"></i>
+            </a>
+          </div>
+
         </div>
-        <div className="bg-white">
-          <div
-            className="bg-emerald-400 w-full h-20 rotate-180"
-            style={{ clipPath: "polygon(100% 0%, 0% 100%, 100% 100%)" }}
-          ></div>
-        </div>
-      </section>
+      </div>
+    </section>
   )
 }
 

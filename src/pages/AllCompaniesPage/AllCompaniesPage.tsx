@@ -30,7 +30,7 @@ const AllCompaniesPage = () => {
     setFilters(newFilters);
   };
 
-  if(isLoading) return <Loading item="Companies" />
+  if (isLoading) return <Loading item="Companies" />
 
   return (
     <section className="px-4 py-12 flex-grow flex">
@@ -61,11 +61,7 @@ const AllCompaniesPage = () => {
             {companies.map((company: Company, idx: number) => (
               <CompanyCard
                 key={idx}
-                phoneNo={company.phone_no}
-                name={company.company_name}
-                mela={company.venue_name}
-                qualification={company.vsQualification}
-                type={company.vsSelectionProcedure}
+                company={company}
               />
             ))}
           </div>
